@@ -41,8 +41,7 @@ class Lesson(models.Model):
 
 
 class Score(models.Model):
-    st_name = models.CharField(Student)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    mark = models.IntegerField(null=False)
     created_at = ...
-
-l = Lesson()
-l.objects.filter(group__student_set)
