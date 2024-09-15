@@ -61,8 +61,14 @@ class Teacher(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
 
 
-class Group(models.Model):
+class GroupSpec(models.Model):
     name = models.CharField(max_length=100)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Group(models.Model):
+    name = models.ForeignKey(GroupSpec, on_delete=models.CASCADE)
     description = models.TextField()
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     lang = models.CharField(max_length=20)
@@ -93,15 +99,15 @@ class Lesson(models.Model):
     file = models.FileField(upload_to=f"lessons/{group.name}",)
 
 
-class Score(models.Model):
+class Score_Attendance(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     mark = models.IntegerField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-
-class Attendance(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     was_present = models.BooleanField(default=True)
+
+
+# class Attendance(models.Model):
+#     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+#     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
