@@ -7,7 +7,7 @@ from django.db import models
 
 class TeacherManager(BaseUserManager):
 
-    def create(self, first_name, last_name, surname, email, phone, address, password=None):
+    def create_user(self, first_name, last_name, surname, email, phone=None, address=None, password=None):
         if not email:
             raise ValueError('Invalid email')
 
@@ -24,17 +24,18 @@ class TeacherManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, first_name, last_name, email, password):
+    def create_superuser(self, first_name, last_name, surname, email, password):
         if not email:
             raise ValueError('Email is required')
 
-        user = self.model(
+        user = self.create_user(
             first_name=first_name,
             last_name=last_name,
-            email=email
+            surname=surname,
+            email=email,
+            password=password
         )
 
-        user.set_password(password)
         user.is_superuser = True
         user.is_admin = True
         user.is_staff = True
