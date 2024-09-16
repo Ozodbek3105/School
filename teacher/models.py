@@ -64,6 +64,7 @@ class Teacher(AbstractBaseUser):
     date_of_birth = models.DateField(null=True, blank=True)
     education = models.CharField(max_length=300, null=True, blank=False)
     profile_photo = models.ImageField(upload_to='professors/profile_photo', null=True, blank=True)
+    skills = models.ForeignKey('Skill', on_delete=models.CASCADE, null=True, blank=True)
 
     objects = TeacherManager()
 
@@ -82,6 +83,13 @@ class Teacher(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Skill(models.Model):
+    name = models.CharField(max_length=150)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class GroupSpec(models.Model):
