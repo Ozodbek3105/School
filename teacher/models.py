@@ -45,12 +45,13 @@ class TeacherManager(BaseUserManager):
 
 
 class Teacher(AbstractBaseUser):
+    
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    phone = models.BigIntegerField(unique=True)
-    address = models.TextField()
+    phone = models.BigIntegerField(unique=True,null=True)
+    address = models.TextField(null=True)
 
     objects = TeacherManager()
 
@@ -60,7 +61,14 @@ class Teacher(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
+   
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'surname']
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
 
+    def has_module_perms(self, app_label):
+        return True
 
 class GroupSpec(models.Model):
     name = models.CharField(max_length=100)
