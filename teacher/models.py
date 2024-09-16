@@ -133,4 +133,4 @@ class Score_Attendance(models.Model):
 
 # class Attendance(models.Model):
 #     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-#     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+#     lesson = models.ForeignKey(Lesson,  on_delete=models.CASCADE)
