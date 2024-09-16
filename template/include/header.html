@@ -24,12 +24,10 @@
 
 
     <!-- Add professor Favicon icon -->
-	
 	<!-- Pick date -->
     <link rel="stylesheet" href='{% static "vendor/pickadate/themes/default.css" %}'>
     <link rel="stylesheet" href='{% static "vendor/pickadate/themes/default.date.css" %}'>
     <!-- End Add professor Favicon icon -->
-
 
 
 </head>
@@ -193,15 +191,10 @@
             <div class="dlabnav-scroll">
                 <ul class="metismenu" id="menu">
                     <li class="nav-label first">Main Menu</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                    <li><a href="/" aria-expanded="false">
 							<i class="la la-home"></i>
 							<span class="nav-text">Dashboard</span>
 						</a>
-                        <ul aria-expanded="false">
-                            <li><a href="index.html">Dashboard 1</a></li>
-                            <li><a href="index-2.html">Dashboard 2</a></li>
-                            <li><a href="index-3.html">Dashboard 3</a></li>
-                        </ul>
                     </li>
 					<li><a class="ai-icon" href="event-management.html" aria-expanded="false">
 							<i class="la la-calendar"></i>
@@ -215,8 +208,8 @@
                         <ul aria-expanded="false">
                             <li><a href='{% url "all_professors" %}'>All Professor</a></li>
                             <li><a href='{% url "add_professor" %}'>Add Professor</a></li>
-                            <li><a href="edit-professor.html">Edit Professor</a></li>
-                            <li><a href="professor-profile.html">Professor Profile</a></li>
+                            <li><a href="{% url 'edit_professor' %}">Edit Professor</a></li>
+                            <li><a href="{% url 'professor_profile' %}">Professor Profile</a></li>
                         </ul>
                     </li>
 					<li><a class="has-arrow" href="javascript:void()" aria-expanded="false">

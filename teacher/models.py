@@ -52,6 +52,7 @@ class Teacher(AbstractBaseUser):
     email = models.EmailField(unique=True)
     phone = models.BigIntegerField(unique=True, null=True)
     address = models.TextField(null=True)
+    skills = models.ForeignKey('Skill', on_delete=models.CASCADE, null=True, blank=True)
 
     objects = TeacherManager()
 
@@ -70,6 +71,13 @@ class Teacher(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Skill(models.Model):
+    name = models.CharField(max_length=150)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class GroupSpec(models.Model):
