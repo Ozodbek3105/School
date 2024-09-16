@@ -7,7 +7,7 @@ from django.db import models
 
 class TeacherManager(BaseUserManager):
 
-    def create_user(self, first_name, last_name, surname, email, phone=None, address=None, password=None):
+    def create_user(self, first_name, last_name, email, phone=None, address=None, password=None, gender=None, department=None, date_of_birth=None, education=None, date_joined=None):
         if not email:
             raise ValueError('Invalid email')
 
@@ -15,23 +15,26 @@ class TeacherManager(BaseUserManager):
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
-            surname=surname,
             phone=phone,
-            address=address
+            address=address,
+            gender=gender,
+            department=department,
+            date_of_birth=date_of_birth,
+            education=education,
+            date_joined=date_joined
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, first_name, last_name, surname, email, password):
+    def create_superuser(self, first_name, last_name, email, password):
         if not email:
             raise ValueError('Email is required')
 
         user = self.create_user(
             first_name=first_name,
             last_name=last_name,
-            surname=surname,
             email=email,
             password=password
         )
@@ -44,14 +47,24 @@ class TeacherManager(BaseUserManager):
         return user
 
 
+GENDER_CHOICES = (
+    ('1', 'Male'),
+    ('2', 'Female')
+)
+
+
 class Teacher(AbstractBaseUser):
-    
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    phone = models.BigIntegerField(unique=True,null=True)
+    email = models.EmailField(unique=True, null=False, blank=False)
+    phone = models.CharField(max_length=100, unique=True, null=True)
     address = models.TextField(null=True)
+    gender = models.CharField(max_length=100, choices=GENDER_CHOICES, null=True, blank=False)
+    department = models.ForeignKey('GroupSpec', on_delete=models.CASCADE, null=True, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    education = models.CharField(max_length=300, null=True, blank=False)
+    profile_photo = models.ImageField(upload_to='professors/profile_photo', null=True, blank=True)
+    skills = models.ForeignKey('Skill', on_delete=models.CASCADE, null=True, blank=True)
 
     objects = TeacherManager()
 
@@ -63,12 +76,21 @@ class Teacher(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
    
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'surname']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+
     def has_perm(self, perm, obj=None):
         return self.is_admin
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Skill(models.Model):
+    name = models.CharField(max_length=150)
+
+    def __str__(self):
+        return f'{self.name}'
+
 
 class GroupSpec(models.Model):
     name = models.CharField(max_length=100)
@@ -122,4 +144,4 @@ class Score_Attendance(models.Model):
 
 # class Attendance(models.Model):
 #     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-#     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+#     lesson = models.ForeignKey(Lesson,  on_delete=models.CASCADE)
