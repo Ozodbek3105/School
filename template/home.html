@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Edumin - Bootstrap Admin Dashboard </title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <link rel="icon" type="{% static 'image/png' %}" sizes="16x16" href="{% static 'images/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'vendor/jqvmap/css/jqvmap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'vendor/chartist/css/chartist.min.css' %}">
 	<!-- Summernote -->
@@ -146,7 +146,7 @@
                             </li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
-                                    <img src="images/profile/education/pic1.jpg" width="20" alt="">
+                                    <img src="{% static 'images/profile/education/pic1.jpg' %}" width="20" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a href="app-profile.html" class="dropdown-item ai-icon">
@@ -528,7 +528,7 @@
 					</div>
 					<div class="col-xl-3 col-xxl-4 col-lg-6 col-md-6">
 						<div class="card">
-							<img class="img-fluid" src="images/courses/pic1.jpg" alt="">
+							<img class="img-fluid" src="{% static 'images/courses/pic1.jpg' %}" alt="">
 							<div class="card-body">
 								<h4><a href="about-courses.html">Why is Early Education Essential?</a></h4>
 								<ul class="list-group mb-3 list-group-flush">
@@ -547,7 +547,7 @@
 					</div>
 					<div class="col-xl-3 col-xxl-4 col-lg-6 col-md-6">
 						<div class="card">
-							<img class="img-fluid" src="images/courses/pic2.jpg" alt="">
+							<img class="img-fluid" src="{% static 'images/courses/pic2.jpg' %}" alt="">
 							<div class="card-body">
 								<h4><a href="about-courses.html">The Shocking Revelation of Education.</a></h4>
 								<ul class="list-group mb-3 list-group-flush">
@@ -566,7 +566,7 @@
 					</div>
 					<div class="col-xl-3 col-xxl-4 col-lg-6 col-md-6">
 						<div class="card">
-							<img class="img-fluid" src="images/courses/pic3.jpg" alt="">
+							<img class="img-fluid" src="{% static 'images/courses/pic3.jpg' %}" alt="">
 							<div class="card-body">
 								<h4><a href="about-courses.html">Five Things Nobody Told You About</a></h4>
 								<ul class="list-group mb-3 list-group-flush">
@@ -585,7 +585,7 @@
 					</div>
 					<div class="col-xl-3 col-xxl-4 col-lg-6 col-md-6">
 						<div class="card">
-							<img class="img-fluid" src="images/courses/pic4.jpg" alt="">
+							<img class="img-fluid" src="{% static 'images/courses/pic4.jpg' %}" alt="">
 							<div class="card-body">
 								<h4><a href="about-courses.html">Learn Python – Interactive Python Tutorial</a></h4>
 								<ul class="list-group mb-3 list-group-flush">
@@ -816,7 +816,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">Dexignlab</a> 2020</p>
+                <p>Copyright © Designed &amp; Developed by <a href="../index.html" target="_blank">Dexignlab</a> 2020</p>
             </div>
         </div>
         <!--**********************************
@@ -841,34 +841,34 @@
         Scripts
     ***********************************-->
     <!-- Required vendors -->
-    <script src="vendor/global/global.min.js"></script>
-	<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <script src="js/custom.min.js"></script>
-    <script src="js/dlabnav-init.js"></script>	
+    <script src="{% static 'vendor/global/global.min.js' %}"></script>
+	<script src="{% static 'vendor/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'js/custom.min.js' %}"></script>
+    <script src="{% static 'js/dlabnav-init.js' %}"></script>	
 	
 	<!-- Chart sparkline plugin files -->
-    <script src="vendor/jquery-sparkline/jquery.sparkline.min.js"></script>
-	<script src="js/plugins-init/sparkline-init.js"></script>
+    <script src="{% static 'vendor/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
+	<script src="{% static 'js/plugins-init/sparkline-init.js' %}"></script>
 	
 	<!-- Chart Morris plugin files -->
-    <script src="vendor/raphael/raphael.min.js"></script>
-    <script src="vendor/morris/morris.min.js"></script> 
+    <script src="{% static 'vendor/raphael/raphael.min.js' %}"></script>
+    <script src="{% static 'vendor/morris/morris.min.js' %}"></script> 
 	
     <!-- Init file -->
-    <script src="js/plugins-init/widgets-script-init.js"></script>
+    <script src="{% static 'js/plugins-init/widgets-script-init.js' %}"></script>
 	
 	<!-- Demo scripts -->
-    <script src="js/dashboard/dashboard.js"></script>
+    <script src="{% static 'js/dashboard/dashboard.js' %}"></script>
 	
 	<!-- Summernote -->
-    <script src="vendor/summernote/js/summernote.min.js"></script>
+    <script src="{% static 'vendor/summernote/js/summernote.min.js' %}"></script>
     <!-- Summernote init -->
-    <script src="js/plugins-init/summernote-init.js"></script>
+    <script src="{% static 'js/plugins-init/summernote-init.js' %}"></script>
 	
 	<!-- Svganimation scripts -->
-    <script src="vendor/svganimation/vivus.min.js"></script>
-    <script src="vendor/svganimation/svg.animation.js"></script>
-    <script src="js/styleSwitcher.js"></script>
+    <script src="{% static 'vendor/svganimation/vivus.min.js' %}"></script>
+    <script src="{% static 'vendor/svganimation/svg.animation.js' %}"></script>
+    <script src="{% static 'js/styleSwitcher.js' %}"></script>
 		
 </body>
 </html>
