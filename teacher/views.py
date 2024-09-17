@@ -24,3 +24,23 @@ class EditProfessorViewset(View):
 class ProfessorProfileViewset(View):
     def get(self, request):
         return TemplateResponse(request, 'professor-profile.html')
+
+class AllStudentsViewset(View):
+    def get(self, request):
+        return TemplateResponse(request, 'all-students.html')
+
+
+class AddStudentViewset(View):
+    def get(self, request):
+        return TemplateResponse(request, "add-student.html")
+
+
+class EditStudentViewset(View):
+    def get(self, request):
+        return TemplateResponse(request, 'edit-student.html')
+
+
+class StudentProfileViewset(View):
+    def get(self, request):
+        return TemplateResponse(request, 'about-student.html')
+
