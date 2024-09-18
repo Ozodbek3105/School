@@ -1,6 +1,5 @@
+from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-
-from django.shortcuts import render
 from django.views import View
 
 from teacher.forms import AddProfessorForm
@@ -25,7 +24,7 @@ class AddProfessorViewset(View):
         form = AddProfessorForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return TemplateResponse(request, "all-professors.html")
+            return redirect("all_professors")
         context = {'form': form}
         print(form.errors)
         print(form.data)
@@ -59,4 +58,3 @@ class EditStudentViewset(View):
 class StudentProfileViewset(View):
     def get(self, request):
         return TemplateResponse(request, 'about-student.html')
-

@@ -7,6 +7,7 @@ from teacher.models import Teacher
 
 fake = Faker()
 
+
 class AddProfessorForm(UserCreationForm):
 
     class Meta:
