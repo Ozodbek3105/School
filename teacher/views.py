@@ -3,6 +3,8 @@ from django.template.response import TemplateResponse
 from django.shortcuts import render
 from django.views import View
 
+from teacher.forms import AddProfessorForm
+
 
 # Create your views here.
 
@@ -13,7 +15,21 @@ class AllProfessorsViewset(View):
 
 class AddProfessorViewset(View):
     def get(self, request):
-        return TemplateResponse(request, "add-professor.html")
+        form = AddProfessorForm()
+        context = {
+            'form': form,
+        }
+        return TemplateResponse(request, "add-professor.html", context)
+    
+    def post(self, request):
+        form = AddProfessorForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return TemplateResponse(request, "all-professors.html")
+        context = {'form': form}
+        print(form.errors)
+        print(form.data)
+        return TemplateResponse(request, "add-professor.html", context)
 
 
 class EditProfessorViewset(View):

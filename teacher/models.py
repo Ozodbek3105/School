@@ -8,8 +8,8 @@ from django.db import models
 class TeacherManager(BaseUserManager):
 
     def create_user(self, first_name, last_name, email, phone=None, address=None, password=None, gender=None, department=None, date_of_birth=None, education=None, date_joined=None):
-        if not email:
-            raise ValueError('Invalid email')
+        if not email and not password:
+            raise ValueError('Invalid email or password')
 
         user = self.model(
             email=self.normalize_email(email),
@@ -68,7 +68,7 @@ class Teacher(AbstractBaseUser):
 
     objects = TeacherManager()
 
-    date_joined = models.DateTimeField(auto_now_add=True)
+    date_joined = models.DateTimeField()
     last_login = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
