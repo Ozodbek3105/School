@@ -12,4 +12,4 @@ urlpatterns = [
     path('add_student/', AddStudentViewset.as_view(), name='add_student'),
     path('edit_student/', EditStudentViewset.as_view(), name='edit_student'),
     path('student_profile/', StudentProfileViewset.as_view(), name='student_profile'),
-]
+]   
