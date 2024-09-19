@@ -1,6 +1,6 @@
 from django.urls import path
 
-from teacher.views import AddProfessorViewset, AddStudentViewset, AllProfessorsViewset, AllStudentsViewset, DeleteProfessorViewset, EditProfessorViewset, EditStudentViewset, ProfessorProfileViewset, StudentProfileViewset
+from teacher.views import *
 
 urlpatterns = [
     path('all_professors/', AllProfessorsViewset.as_view(), name='all_professors'),
@@ -12,4 +12,10 @@ urlpatterns = [
     path('add_student/', AddStudentViewset.as_view(), name='add_student'),
     path('edit_student/', EditStudentViewset.as_view(), name='edit_student'),
     path('student_profile/', StudentProfileViewset.as_view(), name='student_profile'),
-]   
+    path('all_courses/', AllCoursesViewset.as_view(), name='all_courses'),
+    path('add_course/', AddCoursesViewset.as_view(), name='add_course'),
+    path('edit_course/<int:course_id>', EditCoursesViewset.as_view(), name='edit_course'),
+    path('about_course/', AboutCoursesViewset.as_view(), name='about_course'),
+    path('delete_course/<int:course_id>', DeleteCoursesViewset.as_view(), name='delete_course'),
+
+]
