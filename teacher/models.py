@@ -59,7 +59,7 @@ class Teacher(AbstractBaseUser):
     email = models.EmailField(unique=True, null=False, blank=False)
     phone = models.CharField(max_length=100, unique=True, null=True)
     address = models.TextField(null=True)
-    gender = models.CharField(max_length=100, choices=GENDER_CHOICES, null=True, blank=False)
+    gender = models.CharField(max_length=100, choices=GENDER_CHOICES, null=True, blank=False, )
     department = models.ForeignKey('GroupSpec', on_delete=models.CASCADE, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     education = models.CharField(max_length=300, null=True, blank=False)
@@ -84,6 +84,9 @@ class Teacher(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
+    def __str__(self) -> str:
+        return f'{self.first_name} {self.last_name}'
+
 
 class Skill(models.Model):
     name = models.CharField(max_length=150)
@@ -101,11 +104,25 @@ class GroupSpec(models.Model):
         return self.name
 
 
+LANG_CHOICES = (
+    ("1", "UZ"),
+    ("2", "RU"),
+    ("3", "EN"),
+)
+
+
 class Group(models.Model):
     name = models.ForeignKey(GroupSpec, on_delete=models.CASCADE)
+    course_code = models.CharField(max_length=100, null=True)
     description = models.TextField()
+    start_from = models.DateField(null=True)
+    duration = models.IntegerField(default=3)
+    price = models.DecimalField(max_digits=9, decimal_places=2, null=True)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    lang = models.CharField(max_length=20)
+    max_student = models.IntegerField(default=10)
+    contact_number = models.CharField(max_length=100, null=True)
+    lang = models.CharField(max_length=20, choices=LANG_CHOICES, null=True)
+    group_photo = models.ImageField(upload_to='courses/course_photo/%Y/%m', null=True, blank=True)
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -115,11 +132,14 @@ class Group(models.Model):
 class Student(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
+    surname = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField()
-    phone = models.BigIntegerField()
+    phone = models.CharField(max_length=100)
     address = models.TextField()
     group = models.ManyToManyField(Group)
+    education = models.CharField(max_length=300, null=True, blank=False)
+    gender = models.CharField(max_length=20, null=True, blank=False, choices=GENDER_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} {self.surname}'

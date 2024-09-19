@@ -12,7 +12,7 @@
 						<div class="widget-stat card bg-primary overflow-hidden">
 							<div class="card-header">
 								<h3 class="card-title text-white">Total Students</h3>
-								<h5 class="text-white mb-0"><i class="fa fa-caret-up"></i> 422</h5>
+								<h5 class="text-white mb-0"><i class="fa fa-caret-up"></i> {{total_students}}</h5>
 							</div>
 							<div class="card-body text-center mt-3">
 								<div class="ico-sparkline">
@@ -25,7 +25,7 @@
 						<div class="widget-stat card bg-success overflow-hidden">
 							<div class="card-header">
 								<h3 class="card-title text-white">New Students</h3>
-								<h5 class="text-white mb-0"><i class="fa fa-caret-up"></i> 357</h5>
+								<h5 class="text-white mb-0"><i class="fa fa-caret-up"></i> {{new_students.count}}</h5>
 							</div>
 							<div class="card-body text-center mt-4 p-0">
 								<div class="ico-sparkline">
@@ -38,7 +38,7 @@
 						<div class="widget-stat card bg-secondary overflow-hidden">
 							<div class="card-header pb-3">
 								<h3 class="card-title text-white">Total Course</h3>
-								<h5 class="text-white mb-0"><i class="fa fa-caret-up"></i> 547</h5>
+								<h5 class="text-white mb-0"><i class="fa fa-caret-up"></i> {{courses.count}}</h5>
 							</div>
 							<div class="card-body p-0 mt-2">
 								<div class="px-4"><span class="bar1" data-peity='{ "fill": ["rgb(0, 0, 128)", "rgb(7, 135, 234)"]}'>6,2,8,4,-3,8,1,-3,6,-5,9,2,-8,1,4,8,9,8,2,1</span>
@@ -305,12 +305,13 @@
 												<th class="px-5 py-3">Name</th>
                                                 <th class="py-3">Assigned Professor</th>
                                                 <th class="py-3">Branch</th>
-                                                <th class="py-3">Status</th>
                                                 <th class="py-3">Date Of Admit</th>
                                                 <th class="py-3">Edit</th>
                                             </tr>
                                         </thead>
                                         <tbody id="customers">
+                                            {% for student in new_students %}
+                                            {% for group in student.group.all %}
                                             <tr class="btn-reveal-trigger">
                                                 <td class="p-3">
                                                     <a href="javascript:void(0);">
@@ -319,152 +320,21 @@
                                                                 <img class="rounded-circle img-fluid" src='{% static "images/avatar/5.png" %}' width="30" alt="">
                                                             </div>
                                                             <div class="media-body">
-                                                                <h5 class="mb-0 fs--1">Ricky Antony</h5>
+                                                                <h5 class="mb-0 fs--1">{{student.first_name}} {{student.last_name}}</h5>
                                                             </div>
                                                         </div>
                                                     </a>
                                                 </td>
-                                                <td class="py-2">Herman Beck</td>
-                                                <td class="py-2">Mechanical</td>
-                                                <td><span class="badge badge-rounded badge-primary">DONE</span></td>
-                                                <td class="py-2">30/03/2018</td>
+                                                <td class="py-2">{{group.teacher.first_name}}</td>
+                                                <td class="py-2">{{group.name}}</td>
+                                                <td class="py-2">{{student.created_at|date:"d/M/Y"}}</td>
                                                 <td>
                                                     <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
                                                     <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
                                                 </td>
+                                                {% endfor %}
                                             </tr>
-                                            <tr class="btn-reveal-trigger">
-                                                <td class="p-3">
-                                                    <a href="javascript:void(0);">
-                                                        <div class="media d-flex align-items-center">
-                                                            <div class="avatar avatar-xl mr-2">
-                                                                <img class="rounded-circle img-fluid" src='{% static "images/avatar/1.png" %}' alt="" width="30">
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h5 class="mb-0 fs--1">Emma Watson</h5>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="py-2">Emma Watson</td>
-                                                <td class="py-2">Computer</td>
-                                                <td><span class="badge badge-rounded badge-warning">Panding</span></td>
-                                                <td class="py-2">11/07/2017</td>
-                                                <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr class="btn-reveal-trigger">
-                                                <td class="p-3">
-                                                    <a href="javascript:void(0);">
-                                                        <div class="media d-flex align-items-center">
-                                                            <div class="avatar avatar-xl mr-2">
-                                                                <img class="rounded-circle img-fluid" src='{% static "images/avatar/5.png" %}' width="30" alt="">
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h5 class="mb-0 fs--1">Rowen Atkinson</h5>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="py-2">Mary Adams</td>
-                                                <td class="py-2">Mechanical</td>
-                                                <td><span class="badge badge-rounded badge-primary">DONE</span></td>
-                                                <td class="py-2">05/04/2016</td>
-                                                <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr class="btn-reveal-trigger">
-                                                <td class="p-3">
-                                                    <a href="javascript:void(0);">
-                                                        <div class="media d-flex align-items-center">
-                                                            <div class="avatar avatar-xl mr-2">
-                                                                <img class="rounded-circle img-fluid" src='{% static "images/avatar/1.png" %}' alt="" width="30">
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h5 class="mb-0 fs--1">Antony Hopkins</h5>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="py-2">Caleb Richards </td>
-                                                <td class="py-2">Computer </td>
-                                                <td><span class="badge badge-rounded badge-danger">Suspended</span></td>
-                                                <td class="py-2">05/04/2018</td>
-                                                <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr class="btn-reveal-trigger">
-                                                <td class="p-3">
-                                                    <a href="javascript:void(0);">
-                                                        <div class="media d-flex align-items-center">
-                                                            <div class="avatar avatar-xl mr-2">
-                                                                <img class="rounded-circle img-fluid" src='{% static "images/avatar/1.png" %}' alt="" width="30">
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h5 class="mb-0 fs--1">Jennifer Schramm</h5>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="py-2">June Lane</td>
-                                                <td class="py-2">Fees Collection</td>
-                                                <td><span class="badge badge-rounded badge-warning">Panding</span></td>
-                                                <td class="py-2">17/03/2016</td>
-                                                <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr class="btn-reveal-trigger">
-                                                <td class="p-3">
-                                                    <a href="javascript:void(0);">
-                                                        <div class="media d-flex align-items-center">
-                                                            <div class="avatar avatar-xl mr-2">
-                                                                <img class="rounded-circle img-fluid" src='{% static "images/avatar/5.png" %}' width="30" alt="">
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h5 class="mb-0 fs--1">Raymond Mims</h5>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="py-2">Herman Beck</td>
-                                                <td class="py-2">Computer</td>
-                                                <td><span class="badge badge-rounded badge-danger">Suspended</span></td>
-                                                <td class="py-2">12/07/2014</td>
-                                                <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr class="btn-reveal-trigger">
-                                                <td class="p-3">
-                                                    <a href="javascript:void(0);">
-                                                        <div class="media d-flex align-items-center">
-                                                            <div class="avatar avatar-xl mr-2">
-                                                                <img class="rounded-circle img-fluid" src='{% static "images/avatar/1.png" %}' alt="" width="30">
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h5 class="mb-0 fs--1">Michael Jenkins</h5>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="py-2">Jennifer Schramm</td>
-                                                <td class="py-2">Mechanical</td>
-                                                <td><span class="badge badge-rounded badge-warning">Panding</span></td>
-                                                <td class="py-2">15/06/2014</td>
-                                                <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>

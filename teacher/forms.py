@@ -5,7 +5,7 @@ from faker import Faker
 from django.contrib.auth import get_user_model
 
 
-from teacher.models import Teacher
+from teacher.models import Group, Teacher
 
 fake = Faker()
 
@@ -89,3 +89,9 @@ class EditProfessorForm(forms.ModelForm):
         if self.cleaned_data.get('password1') and self.cleaned_data.get('password2'):
             user.set_password(self.cleaned_data.get('password2'))
         return user
+
+
+class AddCourseForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ('name', 'course_code', 'description', 'start_from', 'duration', 'price', 'teacher', 'max_student', 'contact_number', 'lang', 'group_photo')
