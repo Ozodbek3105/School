@@ -25,22 +25,24 @@
                     {% for course in courses %}
 					<div class="col-xl-3 col-xxl-4 col-lg-4 col-md-6 col-sm-6">
 						<div class="card">
-							{% if course.group_photo %}<img class="img-fluid" src="{{course.group_photo.url}}" alt="">{% endif %}
+							{% if course.group_photo %}<img class="img-fluid" src="{{course.group_photo.url}}" alt="">{% else %}<img class="img-fluid" src="{% static 'images/defoult.png' %}" alt="">{% endif %}
 							<div class="card-body">
 								<h4>{{course.description}}</h4>
 								<ul class="list-group mb-3 list-group-flush">
 									<li class="list-group-item px-0 border-top-0 d-flex justify-content-between"><span class="mb-0 text-muted">{{course.start_from|date:'M y'}}</span>
 										<a href="javascript:void(0);"><i class="la la-heart-o mr-1"></i><strong>230</strong></a></li>
-									<li class="list-group-item px-0 d-flex justify-content-between">
+								    <li class="list-group-item px-0 border-top-0 d-flex justify-content-between"><span class="mb-0 text-muted">Course Name</span>
+										<strong>{{course.name}}</strong></li>	
+                                    <li class="list-group-item px-0 d-flex justify-content-between">
 										<span class="mb-0">Duration :</span><strong>{{course.duration}} Months</strong></li>
 									<li class="list-group-item px-0 d-flex justify-content-between">
 										<span class="mb-0">Professor :</span><strong>{{course.teacher}}</strong></li>
 									<li class="list-group-item px-0 d-flex justify-content-between">
-										<span><i class="fa fa-graduation-cap text-primary mr-2"></i></span><strong>+{{course.student_set.count}}</strong></li>
+										<span><i class="fa fa-graduation-cap text-primary mr-2"></i>Student</span><strong>+{{course.max_student}}</strong></li>
 								</ul>
-								<a href='{% url "about_course" %}' class="btn btn-primary">Read More</a>
-                                <a href='{% url "edit_course" course.id %}' class="btn btn-primary">Edit course</a>
-                                <a href='{% url "delete_course" course.id %}' class="btn btn-danger">Delete course</a>
+								<a href='{% url "about_course" course.id %}' class="btn btn-primary mb-1">Read More</a>
+                                <a href='{% url "edit_course" course.id %}' class="btn btn-primary mb-1">Edit course</a>
+                                <a href='{% url "delete_course" course.id %}' class="btn btn-danger mb-1">Delete course</a>
                             </div>
 						</div>
 					</div>

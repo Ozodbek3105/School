@@ -3,11 +3,11 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.views import View
 
-from teacher.forms import AddCourseForm, AddProfessorForm, EditProfessorForm
+from teacher.forms import AddCourseForm, AddProfessorForm, EditProfessorForm,AddStudentForm,EditStudentForm
 
 from django.contrib.auth import get_user_model
 
-from teacher.models import Group
+from teacher.models import Group,Student
 
 # Create your views here.
 
@@ -68,8 +68,12 @@ class EditProfessorViewset(View):
 
 
 class ProfessorProfileViewset(View):
-    def get(self, request):
-        return TemplateResponse(request, 'professor-profile.html')
+    def get(self, request, professor_id):
+        professor = get_object_or_404(User, id=professor_id)
+        context = {
+            'professor': professor,
+        }
+        return TemplateResponse(request, 'professor-profile.html', context)
 
 
 class DeleteProfessorViewset(View):
@@ -84,19 +88,51 @@ class DeleteProfessorViewset(View):
 
 class AllStudentsViewset(View):
     def get(self, request):
-        return TemplateResponse(request, 'all-students.html')
+        students = Student.objects.all()
+        context = {
+            "students": students,
+        }
+        return TemplateResponse(request, 'all-students.html',context)
 
 
 class AddStudentViewset(View):
     def get(self, request):
-        return TemplateResponse(request, "add-student.html")
+        form = AddStudentForm()
+        context = {
+            'form': form,
+        }
+        return TemplateResponse(request, "add-student.html",context)
 
-
+    def post(self, request,):
+        form = AddStudentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("all_students")
+        context = {'form': form}
+        print(form.errors)
+        print(form.data)
+        return TemplateResponse(request, "add-student.html",context)
 class EditStudentViewset(View):
-    def get(self, request):
-        return TemplateResponse(request, 'edit-student.html')
-
-
+    def get(self, request,student_id):
+        student = get_object_or_404(Student, id=student_id)
+        form = EditStudentForm(instance=student)
+        context = {
+            "form":form,
+            "student":student,
+        }
+        return TemplateResponse(request, 'edit-student.html',context)
+    def post(self,request,student_id):
+        student = get_object_or_404(Student, id=student_id)
+        form = EditStudentForm(request.POST,request.FILES,instance=student)
+        if form.is_valid():
+            form.save()
+            return redirect('all_students')
+        context = {
+            "form": form,
+            "student":student,
+        }
+        print("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",form.errors)
+        return TemplateResponse(request, 'edit-student.html',context)
 class StudentProfileViewset(View):
     def get(self, request):
         return TemplateResponse(request, 'about-student.html')
@@ -165,6 +201,9 @@ class DeleteCoursesViewset(View):
 
 
 class AboutCoursesViewset(View):
-    def get(self, request):
-        return TemplateResponse(request, 'about-courses.html')
-
+    def get(self, request, course_id):
+        course = get_object_or_404(Group, id=course_id)
+        context = {
+            course: course
+        }
+        return TemplateResponse(request, 'about-courses.html', context)

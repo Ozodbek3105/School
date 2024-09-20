@@ -5,7 +5,7 @@ from faker import Faker
 from django.contrib.auth import get_user_model
 
 
-from teacher.models import Group, Teacher
+from teacher.models import Group, Teacher,Student
 
 fake = Faker()
 
@@ -95,3 +95,24 @@ class AddCourseForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = ('name', 'course_code', 'description', 'start_from', 'duration', 'price', 'teacher', 'max_student', 'contact_number', 'lang', 'group_photo')
+
+
+class AddStudentForm(forms.ModelForm):  
+    class Meta:
+        model = Student
+        fields = ("first_name", "last_name","surname","email","phone","address","group","education","profile_photo","gender")
+        widgets = {
+            "gender":forms.Select
+        }
+
+    gender = forms.ChoiceField(
+        choices=[('1', 'Male'), ('2', 'Female')],
+        widget=forms.Select,
+        required=False, # Make gender optional if needed
+        label=''
+        )
+    
+class EditStudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ("first_name", "last_name","surname","email","phone","address","group","education","profile_photo","gender")   
