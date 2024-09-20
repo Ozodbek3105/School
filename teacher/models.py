@@ -140,6 +140,7 @@ class Student(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=100)
     address = models.TextField()
+    profile_photo = models.ImageField(upload_to='studnet/profile_photo', null=True, blank=True)
     group = models.ManyToManyField(Group)
     education = models.CharField(max_length=300, null=True, blank=False)
     gender = models.CharField(max_length=20, null=True, blank=False, choices=GENDER_CHOICES)
