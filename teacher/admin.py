@@ -21,8 +21,24 @@ class StudentAdmin(admin.ModelAdmin):
     list_display_links = ['id', 'first_name', 'last_name', 'email']
 
 
+class TeacherForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = "__all__"
+
+        widgets = {
+            'skills': forms.CheckboxSelectMultiple
+        }
+
+
+class TeacherAdmin(admin.ModelAdmin):
+    form = TeacherForm
+    list_display = ["id", "first_name", "last_name", 'email', 'phone']
+    list_display_links = ("id", "first_name", "last_name")
+
+
 # Register your models here.
-admin.site.register(Teacher)
+admin.site.register(Teacher, TeacherAdmin)
 # admin.site.register(TeacherManager)
 admin.site.register(GroupSpec)
 admin.site.register(Group)

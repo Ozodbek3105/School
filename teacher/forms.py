@@ -11,6 +11,7 @@ fake = Faker()
 
 User = get_user_model()
 
+
 class AddProfessorForm(UserCreationForm):
 
     class Meta:

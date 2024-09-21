@@ -1,5 +1,7 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
+from django.contrib.auth.models import Group
+
 
 # Create your models here.
 
@@ -57,13 +59,14 @@ class Teacher(AbstractBaseUser):
     last_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True, null=False, blank=False)
     phone = models.CharField(max_length=100, unique=True, null=True)
-    address = models.TextField(null=True)
+    address = models.TextField(null=True, blank=True)
     gender = models.CharField(max_length=100, choices=GENDER_CHOICES, null=True, blank=False, )
     department = models.ForeignKey('GroupSpec', on_delete=models.CASCADE, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     education = models.CharField(max_length=300, null=True, blank=False)
     profile_photo = models.ImageField(upload_to='professors/profile_photo', null=True, blank=True)
-    skills = models.ForeignKey('Skill', on_delete=models.CASCADE, null=True, blank=True)
+    skills = models.ManyToManyField('Skill', blank=False)
+    dj_group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 
     objects = TeacherManager()
 
