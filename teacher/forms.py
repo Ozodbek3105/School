@@ -5,7 +5,7 @@ from faker import Faker
 from django.contrib.auth import get_user_model
 
 
-from teacher.models import Group, Teacher,Student
+from teacher.models import Group, Student
 
 fake = Faker()
 

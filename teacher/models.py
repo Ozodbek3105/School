@@ -1,5 +1,4 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # Create your models here.
@@ -172,4 +171,9 @@ class Score_Attendance(models.Model):
 #     lesson = models.ForeignKey(Lesson,  on_delete=models.CASCADE)
 
 
-# class  
+class GroupLikes(models.Model):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    session_id = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return f'{self.user.first_name}'

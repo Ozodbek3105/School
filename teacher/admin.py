@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from teacher.models import Group, GroupSpec, Lesson, Score_Attendance, Skill, Student, Teacher, TeacherManager
+from teacher.models import Group, GroupLikes, GroupSpec, Lesson, Score_Attendance, Skill, Student, Teacher, TeacherManager
 
 class StudentForm(forms.ModelForm):
     class Meta:
@@ -30,3 +30,4 @@ admin.site.register(Student, StudentAdmin)
 admin.site.register(Lesson)
 admin.site.register(Score_Attendance)
 admin.site.register(Skill)
+admin.site.register(GroupLikes)
