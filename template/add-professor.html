@@ -1,4 +1,6 @@
-﻿{% extends 'base.html' %} {% block content %}
+﻿<!-- @format -->
+
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block content %}
 <div class="content-body">
   <!-- row -->
   <div class="container-fluid">
@@ -28,111 +30,103 @@
             <h5 class="card-title">Basic Info</h5>
           </div>
           <div class="card-body">
-            <form action="#" method="post">
+            <form
+              action="{% url 'add_professor' %}"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              {% csrf_token %}
               <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="form-group">
+                    {{form.first_name|as_crispy_field}}
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label class="form-label">Last Name</label>
-                    <input type="text" class="form-control" />
+                    {{form.last_name|as_crispy_field}}
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <div class="form-group">{{form.email|as_crispy_field}}</div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <div class="form-group">
+                    {{form.date_joined|as_crispy_field}}
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label class="form-label">Email Here</label>
-                    <input type="text" class="form-control" />
+                    {{form.password1|as_crispy_field}}
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label class="form-label">Joining Date</label>
-                    <input
-                      name="datepicker"
-                      class="datepicker-default form-control"
-                      id="datepicker"
-                    />
+                    {{form.password2|as_crispy_field}}
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                  <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                  <div class="form-group">
-                    <label class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                  <div class="form-group">
-                    <label class="form-label">Mobile Number</label>
-                    <input type="text" class="form-control" />
-                  </div>
+                  <div class="form-group">{{form.phone|as_crispy_field}}</div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="form-group">
                     <label class="form-label">Gender</label>
-                    <select class="form-control">
-                      <option value="Gender">Gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
+                    <select
+                      name="gender"
+                      class="form-control"
+                    >
+                      <option value="">Choose...</option>
+                      {% for label, value in form.gender.field.choices %}
+                      <option value="{{label}}">{{value}}</option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                  <div class="form-group">
-                    <label class="form-label">Designation</label>
-                    <input type="text" class="form-control" />
-                  </div>
+                  <div class="form-group">{{form.address|as_crispy_field}}</div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="form-group">
                     <label class="form-label">Department</label>
-                    <select class="form-control">
+                    <select
+                      name="department"
+                      class="form-control"
+                    >
                       <option value="Department">Department</option>
-                      <option value="html">HTML</option>
-                      <option value="css">CSS</option>
-                      <option value="javascript">JavaScript</option>
-                      <option value="angular">Angular</option>
-                      <option value="angular">React</option>
-                      <option value="vuejs">Vue.js</option>
-                      <option value="ruby">Ruby</option>
-                      <option value="php">PHP</option>
-                      <option value="asp">ASP.NET</option>
-                      <option value="python">Python</option>
-                      <option value="mysql">MySQL</option>
+                      {% for skill in form.department.field.queryset %}
+                      <option value="{{skill.id}}">{{skill.name}}</option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label class="form-label">Date of Birth</label>
-                    <input
-                      name="datepicker"
-                      class="datepicker-default form-control"
-                      id="datepicker1"
-                    />
+                    {{form.date_of_birth|as_crispy_field}}
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label class="form-label">Education</label>
-                    <input type="text" class="form-control" />
+                    {{form.education|as_crispy_field}}
                   </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
                   <div class="form-group fallback w-100">
-                    <input type="file" class="dropify" data-default-file="" />
+                    {{form.profile_photo}}
                   </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="submit" class="btn btn-light">Cencel</button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                  >
+                    Submit
+                  </button>
+                  <button
+                    type="reset"
+                    class="btn btn-light"
+                  >
+                    Cencel
+                  </button>
                 </div>
               </div>
             </form>

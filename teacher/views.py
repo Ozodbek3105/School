@@ -68,8 +68,12 @@ class EditProfessorViewset(View):
 
 
 class ProfessorProfileViewset(View):
-    def get(self, request):
-        return TemplateResponse(request, 'professor-profile.html')
+    def get(self, request, professor_id):
+        professor = get_object_or_404(User, id=professor_id)
+        context = {
+            'professor': professor,
+        }
+        return TemplateResponse(request, 'professor-profile.html', context)
 
 
 class DeleteProfessorViewset(View):
@@ -197,6 +201,9 @@ class DeleteCoursesViewset(View):
 
 
 class AboutCoursesViewset(View):
-    def get(self, request):
-        return TemplateResponse(request, 'about-courses.html')
-
+    def get(self, request, course_id):
+        course = get_object_or_404(Group, id=course_id)
+        context = {
+            course: course
+        }
+        return TemplateResponse(request, 'about-courses.html', context)

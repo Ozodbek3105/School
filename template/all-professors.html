@@ -57,8 +57,7 @@
 										<tbody>
 											{% for teacher in teachers %}
 											<tr>
-												{% if teacher.profile_photo %}<td><img class="rounded-circle" width="35" src="{{teacher.profile_photo.url}}" alt=""></td>{% endif %}
-												<td><img class="rounded-circle" width="35" alt=""></td>
+												{% if teacher.profile_photo %}<td><img class="rounded-circle" width="35" src="{{teacher.profile_photo.url}}" alt=""></td>{% else %}<td><img class="rounded-circle" src="{% static 'images/defoult.png' %}" width="35" alt=""></td>{% endif %}
 												<td>{{teacher.first_name}} {{teacher.last_name}}</td>
 												<td>{{teacher.department}}</td>
 												<td>{{teacher.get_gender_display}}</td>
@@ -99,7 +98,7 @@
 									<div class="card-body pt-2">
 										<div class="text-center">
 											<div class="profile-photo">
-												<img src="images/profile/small/pic2.jpg" width="100" class="img-fluid rounded-circle" alt="">
+												{% if teacher.profile_photo %}<img src={{teacher.profile_photo.url}} width="100" class="img-fluid rounded-circle" alt="">{% else %}<img src="{% static 'images/defoult.png' %}" width="100" class="img-fluid rounded-circle" alt="">{% endif %}
 											</div>
 											<h3 class="mt-4 mb-1">{{teacher.first_name}}</h3>
 											<p class="text-muted">{{teacher.education}}</p>
@@ -113,7 +112,7 @@
 												<li class="list-group-item px-0 d-flex justify-content-between">
 													<span class="mb-0">Address:</span><strong>{{teacher.address}}</strong></li>
 											</ul>
-											<a class="btn btn-outline-primary btn-rounded mt-3 px-4" href="professor-profile.html">Read More</a>
+											<a class="btn btn-outline-primary btn-rounded mt-3 px-4" href="{% url 'professor_profile' teacher.id %}">Read More</a>
 										</div>
 									</div>
 								</div>
