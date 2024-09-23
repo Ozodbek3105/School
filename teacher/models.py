@@ -145,7 +145,7 @@ class Student(models.Model):
     education = models.CharField(max_length=300, null=True, blank=False)
     gender = models.CharField(max_length=20, null=True, blank=False, choices=GENDER_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    birthday = models.DateField(null=True) 
     def __str__(self):
         return f'{self.first_name} {self.last_name} {self.surname}'
 
