@@ -51,16 +51,34 @@
 											</div>
 										</div>
 										
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Group</label>
+                                                <select
+                                                name="group"
+                                                class="form-control"
+                                                >
+                                                <option value="Department">choice</option>
+                                                {% for group in form.group.field.queryset %}
+                                                <option value="{{group.id}}">{{group.name}}</option>
+                                                {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
 										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												{{form.group|as_crispy_field}}
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												{{form.gender|as_crispy_field}}
-											</div>
-										</div>
+                                            <div class="form-group">
+                                                <label class="form-label">Gender</label>
+                                                <select
+                                                name="gender"
+                                                class="form-control"
+                                                >
+                                                <option value="">Choose...</option>
+                                                {% for label, value in form.gender.field.choices %}
+                                                <option value="{{label}}">{{value}}</option>
+                                                {% endfor %}
+                                                </select>
+                                            </div>
+                                            </div>
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											{{form.phone|as_crispy_field}}
 										</div>
