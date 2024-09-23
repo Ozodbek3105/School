@@ -209,7 +209,7 @@
 						</a>
                         <ul aria-expanded="false">
                             <li><a href='{% url "all_professors" %}'>All Professor</a></li>
-                            {% if user.teacher.add_teacher %}
+                            {% if perms.teacher.add_teacher %}
                             <li><a href='{% url "add_professor" %}'>Add Professor</a></li>
                             {% endif %}
                         </ul>

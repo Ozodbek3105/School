@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.auth.hashers import make_password
 
 from teacher.models import Group, GroupLikes, GroupSpec, Lesson, Score_Attendance, Skill, Student, Teacher, TeacherManager
 
@@ -35,6 +36,11 @@ class TeacherAdmin(admin.ModelAdmin):
     form = TeacherForm
     list_display = ["id", "first_name", "last_name", 'email', 'phone']
     list_display_links = ("id", "first_name", "last_name")
+
+    def save_model(self, request, obj, form, change):
+        print(obj.groups.all())
+        obj.password = make_password(obj.password)
+        return super().save_model(request, obj, form, change)
 
 
 # Register your models here.

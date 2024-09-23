@@ -1,6 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, PermissionsMixin
 
 
 # Create your models here.
@@ -54,7 +54,7 @@ GENDER_CHOICES = (
 )
 
 
-class Teacher(AbstractBaseUser):
+class Teacher(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True, null=False, blank=False)
@@ -66,7 +66,6 @@ class Teacher(AbstractBaseUser):
     education = models.CharField(max_length=300, null=True, blank=False)
     profile_photo = models.ImageField(upload_to='professors/profile_photo', null=True, blank=True)
     skills = models.ManyToManyField('Skill', blank=False)
-    dj_group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 
     objects = TeacherManager()
 
@@ -92,6 +91,12 @@ class Teacher(AbstractBaseUser):
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'
+
+    class Meta:
+        permissions = [
+            ('add_professor', 'Can add a professor'),
+            # add other custom permissions if necessary
+        ]
 
 
 class Skill(models.Model):
