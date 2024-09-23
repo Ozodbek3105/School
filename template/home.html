@@ -311,8 +311,8 @@
                                         </thead>
                                         <tbody id="customers">
                                             {% for student in new_students %}
-                                            {% for group in student.group.all %}
                                             <tr class="btn-reveal-trigger">
+                                                {% for group in student.group.all %}
                                                 <td class="p-3">
                                                     <a href="javascript:void(0);">
                                                         <div class="media d-flex align-items-center">
