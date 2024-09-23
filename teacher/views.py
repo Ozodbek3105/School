@@ -134,8 +134,23 @@ class EditStudentViewset(View):
         print("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",form.errors)
         return TemplateResponse(request, 'edit-student.html',context)
 class StudentProfileViewset(View):
-    def get(self, request):
-        return TemplateResponse(request, 'about-student.html')
+    def get(self, request,student_id=None):
+        if student_id :
+            student = get_object_or_404(Student, id=student_id)
+            context = {
+                "student":student,
+            }
+            return TemplateResponse(request, 'about-student.html',context)
+
+class DeleteStudentViewset(View):
+    def get(self, request, student_id=None):
+        if student_id:
+            student = get_object_or_404(Student, id=student_id)
+            student.delete()
+            student_id += 1
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER", ""))
+            # return HttpResponseRedirect(request.path_info) # Does not work properly
+
 
 
 class AllCoursesViewset(View):

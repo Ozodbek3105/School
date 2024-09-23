@@ -11,6 +11,7 @@ urlpatterns = [
     path('all_students/', AllStudentsViewset.as_view(), name='all_students'),
     path('add_student/', AddStudentViewset.as_view(), name='add_student'),
     path('edit_student/<int:student_id>', EditStudentViewset.as_view(), name='edit_student'),
+    path('delete_student/<int:student_id>', DeleteStudentViewset.as_view(), name='delete_student'),
     path('student_profile/', StudentProfileViewset.as_view(), name='student_profile'),
     path('all_courses/', AllCoursesViewset.as_view(), name='all_courses'),
     path('add_course/', AddCoursesViewset.as_view(), name='add_course'),
