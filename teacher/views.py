@@ -16,7 +16,8 @@ from teacher.models import Group,Student
 User = get_user_model()
 
 
-class AllProfessorsViewset(View):
+class AllProfessorsViewset(LoginRequiredMixin, View):
+    login_url = ""
     def get(self, request):
         teachers = User.objects.all()
         context = {"teachers": teachers}
@@ -71,7 +72,7 @@ class EditProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
         return TemplateResponse(request, "edit-professor.html", context)
 
 
-class ProfessorProfileViewset(View):
+class ProfessorProfileViewset(LoginRequiredMixin, View):
     def get(self, request, professor_id):
         professor = get_object_or_404(User, id=professor_id)
         context = {
@@ -80,7 +81,8 @@ class ProfessorProfileViewset(View):
         return TemplateResponse(request, 'professor-profile.html', context)
 
 
-class DeleteProfessorViewset(View):
+class DeleteProfessorViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
+    permission_required = ["teacher.delete_teacher"]
     def get(self, request, professor_id=None):
         if professor_id:
             teacher = get_object_or_404(User, id=professor_id)
@@ -90,7 +92,7 @@ class DeleteProfessorViewset(View):
             # return HttpResponseRedirect(request.path_info) # Does not work properly
 
 
-class AllStudentsViewset(View):
+class AllStudentsViewset(LoginRequiredMixin, View):
     def get(self, request):
         students = Student.objects.all()
         context = {
@@ -99,7 +101,8 @@ class AllStudentsViewset(View):
         return TemplateResponse(request, 'all-students.html',context)
 
 
-class AddStudentViewset(View):
+class AddStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'teacher.add_student'
     def get(self, request):
         form = AddStudentForm()
         context = {
@@ -118,7 +121,8 @@ class AddStudentViewset(View):
         return TemplateResponse(request, "add-student.html",context)
     
 
-class EditStudentViewset(View):
+class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'teacher.change_student'
     def get(self, request,student_id):
         student = get_object_or_404(Student, id=student_id)
         form = EditStudentForm(instance=student)
@@ -141,12 +145,20 @@ class EditStudentViewset(View):
         return TemplateResponse(request, 'edit-student.html',context)
     
 
-class StudentProfileViewset(View):
+class DeleteStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'teacher.delete_student'
+    def post(self, request, student_id):
+        student = Student.objects.get(id=student_id)
+        student.delete()
+        return redirect("all_students")
+
+
+class StudentProfileViewset(LoginRequiredMixin, View):
     def get(self, request):
         return TemplateResponse(request, 'about-student.html')
 
 
-class AllCoursesViewset(View):
+class AllCoursesViewset(LoginRequiredMixin, View):
     def get(self, request):
         courses = Group.objects.all()
         context = {
@@ -155,7 +167,8 @@ class AllCoursesViewset(View):
         return TemplateResponse(request, 'all-courses.html', context)
 
 
-class AddCoursesViewset(View):
+class AddCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'teacher.add_course'
     def get(self, request):
         form = AddCourseForm()
         context = {
@@ -176,7 +189,8 @@ class AddCoursesViewset(View):
         return TemplateResponse(request, "add-courses.html", context)
         
 
-class EditCoursesViewset(View):
+class EditCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'teacher.edit_course'
     def get(self, request, course_id):
         course = get_object_or_404(Group, id=course_id)
         form = AddCourseForm(instance=course)
@@ -201,17 +215,23 @@ class EditCoursesViewset(View):
         return TemplateResponse(request, 'edit-courses.html', context)
 
 
-class DeleteCoursesViewset(View):
+class DeleteCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'teacher.delete_course'
     def get(self, request, course_id):
         course = get_object_or_404(Group, id=course_id)
         course.delete()
         return HttpResponseRedirect(request.META.get("HTTP_REFERER", ""))
 
 
-class AboutCoursesViewset(View):
+class AboutCoursesViewset(LoginRequiredMixin, View):
     def get(self, request, course_id):
         course = get_object_or_404(Group, id=course_id)
         context = {
             course: course
         }
         return TemplateResponse(request, 'about-courses.html', context)
+
+
+class ViewCoursesViewset(LoginRequiredMixin, View):
+    def get(self, request, course_id):
+        pass

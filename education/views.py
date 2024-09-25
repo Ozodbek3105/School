@@ -1,11 +1,13 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from teacher.models import Group, GroupSpec, Student
 
 
+@login_required(login_url='')
 def home(request):
     query_set = Student.objects.all()
-    new_students =query_set.order_by('-created_at')[:7]
+    new_students = query_set.order_by('-created_at')[:7]
     total_students = query_set.count()
     courses = GroupSpec.objects.all()
     context = {
