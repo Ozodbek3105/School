@@ -115,6 +115,8 @@ class AddStudentViewset(View):
         print(form.errors)
         print(form.data)
         return TemplateResponse(request, "add-student.html",context)
+    
+
 class EditStudentViewset(View):
     def get(self, request,student_id):
         student = get_object_or_404(Student, id=student_id)
@@ -136,6 +138,8 @@ class EditStudentViewset(View):
         }
         print("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",form.errors)
         return TemplateResponse(request, 'edit-student.html',context)
+    
+    
 class StudentProfileViewset(View):
     def get(self, request):
         return TemplateResponse(request, 'about-student.html')
