@@ -1,9 +1,10 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.views import View
 
-from teacher.forms import AddCourseForm, AddProfessorForm, EditProfessorForm,AddStudentForm,EditStudentForm
+from teacher.forms import AddCourseForm, AddProfessorForm, EditProfessorForm, AddStudentForm, EditStudentForm
 
 from django.contrib.auth import get_user_model
 
@@ -22,7 +23,9 @@ class AllProfessorsViewset(View):
         return TemplateResponse(request, 'all-professors.html', context)
 
 
-class AddProfessorViewset(View):
+class AddProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'teacher.add_professor'
+    
     def get(self, request):
         form = AddProfessorForm()
         context = {

@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.auth.models import Group, PermissionsMixin
+
 
 # Create your models here.
 
@@ -53,18 +54,18 @@ GENDER_CHOICES = (
 )
 
 
-class Teacher(AbstractBaseUser):
+class Teacher(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True, null=False, blank=False)
     phone = models.CharField(max_length=100, unique=True, null=True)
-    address = models.TextField(null=True)
+    address = models.TextField(null=True, blank=True)
     gender = models.CharField(max_length=100, choices=GENDER_CHOICES, null=True, blank=False, )
     department = models.ForeignKey('GroupSpec', on_delete=models.CASCADE, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     education = models.CharField(max_length=300, null=True, blank=False)
     profile_photo = models.ImageField(upload_to='professors/profile_photo', null=True, blank=True)
-    skills = models.ForeignKey('Skill', on_delete=models.CASCADE, null=True, blank=True)
+    skills = models.ManyToManyField('Skill', blank=False)
 
     objects = TeacherManager()
 
@@ -90,6 +91,12 @@ class Teacher(AbstractBaseUser):
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'
+
+    class Meta:
+        permissions = [
+            ('add_professor', 'Can add a professor'),
+            # add other custom permissions if necessary
+        ]
 
 
 class Skill(models.Model):
@@ -172,4 +179,9 @@ class Score_Attendance(models.Model):
 #     lesson = models.ForeignKey(Lesson,  on_delete=models.CASCADE)
 
 
-# class  
+class GroupLikes(models.Model):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    session_id = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return f'{self.user.first_name}'

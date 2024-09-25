@@ -19,10 +19,14 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
+
+from login.views import AddManagerViewset
+
 from .views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", home),
+    path("", home, name="home"),
+    path("addManager/", AddManagerViewset.as_view(), name="addManager"),
     path('education/', include('teacher.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
