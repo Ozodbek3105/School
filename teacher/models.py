@@ -65,7 +65,7 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
     date_of_birth = models.DateField(null=True, blank=True)
     education = models.CharField(max_length=300, null=True, blank=False)
     profile_photo = models.ImageField(upload_to='professors/profile_photo', null=True, blank=True)
-    skills = models.ManyToManyField('Skill', blank=False)
+    skills = models.ManyToManyField('Skill', blank=True)
 
     objects = TeacherManager()
 
@@ -76,7 +76,7 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
-    
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
@@ -92,11 +92,11 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'
 
-    class Meta:
-        permissions = [
-            ('add_professor', 'Can add a professor'),
-            # add other custom permissions if necessary
-        ]
+    # class Meta:
+    #     permissions = [
+    #         ('add_professor', 'Can add a professor'),
+    #         # add other custom permissions if necessary
+    #     ]
 
 
 class Skill(models.Model):

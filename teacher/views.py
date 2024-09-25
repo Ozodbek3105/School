@@ -24,7 +24,7 @@ class AllProfessorsViewset(View):
 
 
 class AddProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
-    permission_required = 'teacher.add_professor'
+    permission_required = 'teacher.add_teacher'
     
     def get(self, request):
         form = AddProfessorForm()
@@ -44,7 +44,8 @@ class AddProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
         return TemplateResponse(request, "add-professor.html", context)
 
 
-class EditProfessorViewset(View):
+class EditProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'teacher.change_teacher'
     def get(self, request, professor_id):
         teacher = get_object_or_404(User, id=professor_id)
         form = AddProfessorForm(instance=teacher)
@@ -139,7 +140,7 @@ class EditStudentViewset(View):
         print("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",form.errors)
         return TemplateResponse(request, 'edit-student.html',context)
     
-    
+
 class StudentProfileViewset(View):
     def get(self, request):
         return TemplateResponse(request, 'about-student.html')
