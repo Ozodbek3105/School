@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href='{% static "vendor/bootstrap-select/dist/css/bootstrap-select.min.css" %}'>
     <link rel="stylesheet" href='{% static "css/style.css" %}'>
 	<link rel="stylesheet" href='{% static "css/skin-2.css" %}'>
-
+    <script src="https://kit.fontawesome.com/aa9c6364b5.js" crossorigin="anonymous"></script>
 
     <!-- All professors Favicon icon -->
 	<!-- Datatable -->
@@ -29,10 +29,17 @@
     <link rel="stylesheet" href='{% static "vendor/pickadate/themes/default.date.css" %}'>
     <!-- End Add professor Favicon icon -->
 	
-	<!-- Pick date -->
 
+<!-- Attendance -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<!-- Attendance end -->
 
 </head>
+
+
 
 <body>
 
@@ -225,6 +232,8 @@
                             {% endif %}
                         </ul>
                     </li>
+
+
 					<li><a class="has-arrow" href="javascript:void()" aria-expanded="false">
 							<i class="la la-graduation-cap"></i>
 							<span class="nav-text">Courses</span>
@@ -232,6 +241,17 @@
                         <ul aria-expanded="false">
                             <li><a href="{% url 'all_courses' %}">All Courses</a></li>
                             <li><a href="{% url 'add_course' %}">Add Courses</a></li>
+                        </ul>
+                    </li>
+
+
+					<li><a class="has-arrow" href="javascript:void()" aria-expanded="false">
+							<i class="fa-solid fa-person-chalkboard"></i>
+							<span class="nav-text">Lessons</span>
+						</a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'all_lessons' %}">All Lessons</a></li>
+                            <li><a href="{% url 'add_lesson' %}">Add Lessons</a></li>
                         </ul>
                     </li>
 					<li><a class="has-arrow" href="javascript:void()" aria-expanded="false">

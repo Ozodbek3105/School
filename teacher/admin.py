@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.hashers import make_password
 
-from teacher.models import Group, GroupLikes, GroupSpec, Lesson, Score_Attendance, Skill, Student, Teacher, TeacherManager
+from teacher.models import Group, GroupLikes, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student, Teacher, TeacherManager
 
 class StudentForm(forms.ModelForm):
     class Meta:
@@ -46,6 +46,10 @@ class TeacherAdmin(admin.ModelAdmin):
         return super().save_model(request, obj, form, change)
 
 
+class LessonFilesAdmin(admin.ModelAdmin):
+    list_display = ["id", "file", "lesson"]
+
+
 # Register your models here.
 admin.site.register(Teacher, TeacherAdmin)
 # admin.site.register(TeacherManager)
@@ -56,3 +60,4 @@ admin.site.register(Lesson)
 admin.site.register(Score_Attendance)
 admin.site.register(Skill)
 admin.site.register(GroupLikes)
+admin.site.register(LessonFiles, LessonFilesAdmin)

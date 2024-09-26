@@ -1,3 +1,4 @@
+from dataclasses import fields
 from typing import Any
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
@@ -5,7 +6,7 @@ from faker import Faker
 from django.contrib.auth import get_user_model
 
 
-from teacher.models import Group, Student
+from teacher.models import Group, Lesson, Student
 
 fake = Faker()
 
@@ -116,4 +117,16 @@ class AddStudentForm(forms.ModelForm):
 class EditStudentForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ("first_name", "last_name","surname","email","phone","address","group","education","profile_photo","gender")   
+        fields = ("first_name", "last_name","surname","email","phone","address","group","education","profile_photo","gender")
+
+
+class AddLessonForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = '__all__'
+
+
+class EditLessonForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = '__all__'
