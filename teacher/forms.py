@@ -100,7 +100,7 @@ class AddCourseForm(forms.ModelForm):
 class AddStudentForm(forms.ModelForm):  
     class Meta:
         model = Student
-        fields = ("first_name", "last_name","surname","email","phone","address","group","education","profile_photo","gender")
+        fields = ("first_name", "last_name","surname","email","phone","address","group","education","profile_photo","gender",'birthday')
         widgets = {
             "gender":forms.Select
         }
