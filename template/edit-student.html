@@ -54,10 +54,10 @@
                                                 <select
                                                 name="group"
                                                 class="form-control"
+                                                multiple
                                                 >
-                                                <option value="Department">choice</option>
                                                 {% for group in form.group.field.queryset %}
-                                                <option value="{{group.id}}">{{group.name}}</option>
+                                                <option value="{{group.id}}" {% if group.id == form.group.value %} selected {% endif %}>{{group.name}}</option>
                                                 {% endfor %}
                                                 </select>
                                             </div>
@@ -71,7 +71,10 @@
                                                 >
                                                 <option value="">Choose...</option>
                                                 {% for label, value in form.gender.field.choices %}
+                                                {% if label == form.initial.gender %}<option value="{{label}}"selected>{{value}}</option>
+                                                {% else %}
                                                 <option value="{{label}}">{{value}}</option>
+                                                {% endif %}
                                                 {% endfor %}
                                                 </select>
                                             </div>
@@ -79,15 +82,13 @@
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											{{form.phone|as_crispy_field}}
 										</div>
-										
-										
-										
-										
 										<div class="col-lg-12 col-md-12 col-sm-12">
 											{{form.address|as_crispy_field}}
 										</div>
 										<div class="col-lg-12 col-md-12 col-sm-12">
-											{{form.profile_photo|as_crispy_field}}
+                                            <div class="form-group">
+                                                {{form.profile_photo}}
+                                            </div>
 										</div>
 										<div class="col-lg-12 col-md-12 col-sm-12">
 											<button type="submit" class="btn btn-primary">Submit</button>
