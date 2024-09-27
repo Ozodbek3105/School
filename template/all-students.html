@@ -46,7 +46,7 @@
 												<th>#</th>
 												<th>Roll No.</th>
 												<th>Name</th>
-												<th>Education</th>
+												<th>Gender</th>
 												<th>Mobile</th>
 												<th>Email</th>
 												<th>Admission Date</th>
@@ -63,7 +63,7 @@
 												{% endif %}
 												<td><strong>{{student.id}}</strong></td>
 												<td>{{student.first_name}} {{student.last_name}}</td>
-												<td>{{student.education}}</td>
+												<td>{{student.get_gender_display}}</td>
 												<td><a href="javascript:void(0);"><strong>{{student.phone}}</strong></a></td>
 												<td><a href="javascript:void(0);"><strong>{{student.email}}</strong></a></td>
 												<td>{{student.created_at}}</td>
@@ -92,8 +92,8 @@
 											</button>
 											<div class="dropdown-menu dropdown-menu-right border py-0">
 												<div class="py-2">
-													<a class="dropdown-item" href="javascript:void(0);">Edit</a>
-													<a class="dropdown-item text-danger" href="javascript:void(0);">Delete</a>
+													<a class="dropdown-item" href="{% url 'edit_student' student.id %}">Edit</a>
+													<a class="dropdown-item text-danger" href="{% url 'delete_student' student.id %}">Delete</a>
 												</div>
 											</div>
 										</div>
@@ -119,7 +119,7 @@
 												<li class="list-group-item px-0 d-flex justify-content-between">
 													<span class="mb-0">Email:</span><strong>{{student.email}}</strong></li>
 											</ul>
-											<a class="btn btn-outline-primary btn-rounded mt-3 px-4" href="{% url 'student_profile'  %}">Read More</a>
+											<a class="btn btn-outline-primary btn-rounded mt-3 px-4" href="{% url 'student_profile' student.id  %}">Read More</a>
 										</div>
 									</div>
 								</div>

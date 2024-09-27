@@ -119,7 +119,7 @@ class AddStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
         context = {'form': form}
         print(form.errors)
         print(form.data)
-        return TemplateResponse(request, "add-student.html",context)
+        return TemplateResponse(request, "add-student.html", context)
     
 
 class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -155,7 +155,7 @@ class DeleteStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 
 class StudentProfileViewset(LoginRequiredMixin, View):
-    def get(self, request):
+    def get(self, request, student_id):
         return TemplateResponse(request, 'about-student.html')
 
 

@@ -329,8 +329,8 @@
                                                 <td class="py-2">{{group.name}}</td>
                                                 <td class="py-2">{{student.created_at|date:"d/M/Y"}}</td>
                                                 <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
+                                                    <a href="{% url 'edit_student' student.id %}" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
+                                                    <a href="{% url 'delete_student' student.id %}" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
                                                 </td>
                                                 {% endfor %}
                                             </tr>
