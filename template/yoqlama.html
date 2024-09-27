@@ -1,104 +1,68 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
-<div class="row">
-			<div class="col-lg-12">
-				<div class="row tab-content">
-					<div id="list-view" class="tab-pane fade active show col-lg-12">
-						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title">All Lessons  </h4>
-								<a href="{% url 'add_lesson' %}" class="btn btn-primary">+ Add new</a>
-							</div>
-							<div class="card-body">
-                                
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row tab-content">
+                    <div id="list-view" class="tab-pane fade active show col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">All Lessons</h4>
+                                <a href="{% url 'add_lesson' %}" class="btn btn-primary">+ Add new</a>
+                            </div>
+                            <div class="card-body">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4">Talabalar Yo'qlamasi</h2>
-                                    <form action="#" method="post">
+                                    <h2 class="text-center mb-4">Students Attendance</h2>
+                                    <form action="{% url 'attendance' lesson.id %}" method="post" style="overflow-x: auto;">
+                                        {% csrf_token %}
+                                        {{ formset.management_form }}
+        
                                         <table class="table table-striped table-hover">
                                             <thead class="bg-primary text-white">
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Ism</th>
-                                                    <th>Familiya</th>
-                                                    <th>Yo'qlama</th>
+                                                    <th>First Name</th>
+                                                    <th>Last Name</th>
+                                                    <th>Attendance</th>
+                                                    <th>Score</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {% for form in formset %}
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>Ali</td>
-                                                    <td>Olimov</td>
+                                                    {{ form.id }}
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{form.instance.student.first_name}}</td>
+                                                    <td>{{form.instance.student.last_name}}</td>
+        
+                                                    <!-- Hidden id field to ensure the formset can track each record -->
+        
                                                     <td>
-                                                        <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="attendance[1]" value="qatnashdi" id="ali_present">
-                                                            <label class="form-check-label" for="ali_present">
-                                                                <i class="fas fa-check-circle text-success"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="attendance[1]" value="qatnashmadi" id="ali_absent">
-                                                            <label class="form-check-label" for="ali_absent">
-                                                                <i class="fas fa-times-circle text-danger"></i>
-                                                            </label>
-                                                        </div>
+                                                        {{ form.is_present|as_crispy_field }}
+                                                    </td>
+                                                    <td>
+                                                        {{ form.mark|as_crispy_field }}
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Nodira</td>
-                                                    <td>Azimova</td>
-                                                    <td>
-                                                        <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="attendance[2]" value="qatnashdi" id="nodira_present">
-                                                            <label class="form-check-label" for="nodira_present">
-                                                                <i class="fas fa-check-circle text-success"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="attendance[2]" value="qatnashmadi" id="nodira_absent">
-                                                            <label class="form-check-label" for="nodira_absent">
-                                                                <i class="fas fa-times-circle text-danger"></i>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Sardor</td>
-                                                    <td>Saidov</td>
-                                                    <td>
-                                                        <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="attendance[3]" value="qatnashdi" id="sardor_present">
-                                                            <label class="form-check-label" for="sardor_present">
-                                                                <i class="fas fa-check-circle text-success"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="attendance[3]" value="qatnashmadi" id="sardor_absent">
-                                                            <label class="form-check-label" for="sardor_absent">
-                                                                <i class="fas fa-times-circle text-danger"></i>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Yo'qlama Qilish</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
                                         </div>
                                     </form>
                                 </div>
-						
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-
-
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

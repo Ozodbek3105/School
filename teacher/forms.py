@@ -4,9 +4,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from faker import Faker
 from django.contrib.auth import get_user_model
-
-
-from teacher.models import Group, Lesson, Student
+from django.forms import modelformset_factory
+from django.db import models
+from teacher.models import Group, Lesson, Score_Attendance, Student
 
 fake = Faker()
 
@@ -131,3 +131,11 @@ class EditLessonForm(forms.ModelForm):
     class Meta:
         model = Lesson
         fields = '__all__'
+
+
+# class AttendanceForm(forms.ModelForm):
+#     class Meta:
+#         model = Score_Attendance
+#         fields = ["student", 'lesson', 'mark', 'is_present']
+
+StudentsAttendanceFormSet = modelformset_factory(model=Score_Attendance, fields=["student", 'lesson', 'mark', 'is_present'], extra=0)
