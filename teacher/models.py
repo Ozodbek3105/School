@@ -2,7 +2,8 @@ import os
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.contrib.auth.models import Group, PermissionsMixin
-from requests import delete
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 
 # Create your models here.
@@ -85,11 +86,11 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
     
-    def has_perm(self, perm, obj=None):
-        return self.is_admin
+    # def has_perm(self, perm, obj=None):
+    #     return self.is_admin
 
-    def has_module_perms(self, app_label):
-        return True
+    # def has_module_perms(self, app_label):
+    #     return True
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'
@@ -217,7 +218,7 @@ class LessonFiles(models.Model):
 class Score_Attendance(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=True, null=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, blank=True)
-    mark = models.DecimalField(null=True, blank=True, decimal_places=1, max_digits=2)
+    mark = models.DecimalField(null=True, blank=True, decimal_places=1, max_digits=3, validators=[MaxValueValidator(10.0), MinValueValidator(0.0)])
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_present = models.BooleanField(default=True)

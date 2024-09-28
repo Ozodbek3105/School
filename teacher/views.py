@@ -19,7 +19,7 @@ User = get_user_model()
 
 
 class AllProfessorsViewset(LoginRequiredMixin, View):
-    login_url = ""
+    login_url = "login"
 
     def get(self, request):
         teachers = User.objects.all()
@@ -28,6 +28,7 @@ class AllProfessorsViewset(LoginRequiredMixin, View):
 
 
 class AddProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
     permission_required = 'teacher.add_teacher'
     
     def get(self, request):
@@ -49,6 +50,7 @@ class AddProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 
 class EditProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
     permission_required = 'teacher.change_teacher'
 
     def get(self, request, professor_id):
@@ -77,6 +79,7 @@ class EditProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 
 class ProfessorProfileViewset(LoginRequiredMixin, View):
+    login_url = 'login'
     def get(self, request, professor_id):
         professor = get_object_or_404(User, id=professor_id)
         context = {
@@ -86,6 +89,7 @@ class ProfessorProfileViewset(LoginRequiredMixin, View):
 
 
 class DeleteProfessorViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
+    login_url = 'login'
     permission_required = ["teacher.delete_teacher"]
 
     def get(self, request, professor_id=None):
@@ -98,6 +102,7 @@ class DeleteProfessorViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
 
 
 class AllStudentsViewset(LoginRequiredMixin, View):
+    login_url = 'login'
     def get(self, request):
         students = Student.objects.all()
         context = {
@@ -107,6 +112,7 @@ class AllStudentsViewset(LoginRequiredMixin, View):
 
 
 class AddStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
     permission_required = 'teacher.add_student'
 
     def get(self, request):
@@ -127,6 +133,7 @@ class AddStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     
 
 class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
     permission_required = 'teacher.change_student'
 
     def get(self, request,student_id):
@@ -153,6 +160,7 @@ class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     
 
 class DeleteStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
     permission_required = 'teacher.delete_student'
 
     def post(self, request, student_id):
@@ -162,11 +170,13 @@ class DeleteStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 
 class StudentProfileViewset(LoginRequiredMixin, View):
+    login_url = 'login'
     def get(self, request, student_id):
         return TemplateResponse(request, 'about-student.html')
 
 
 class AllCoursesViewset(LoginRequiredMixin, View):
+    login_url = 'login'
     def get(self, request):
         courses = Group.objects.all()
         context = {
@@ -176,6 +186,7 @@ class AllCoursesViewset(LoginRequiredMixin, View):
 
 
 class AddCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
     permission_required = 'teacher.add_course'
 
     def get(self, request):
@@ -199,6 +210,7 @@ class AddCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
         
 
 class EditCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
     permission_required = 'teacher.edit_course'
 
     def get(self, request, course_id):
@@ -226,6 +238,7 @@ class EditCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 
 class DeleteCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
     permission_required = 'teacher.delete_course'
 
     def get(self, request, course_id):
@@ -235,6 +248,7 @@ class DeleteCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 
 class AllLessonsViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
     permission_required = ''
     def get(self, request):
         lessons = Lesson.objects.all()
@@ -245,6 +259,7 @@ class AllLessonsViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     
 
 class AddLessonViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
     permission_required = 'teacher.add_lesson'
 
     def get(self, request):
@@ -274,6 +289,7 @@ class AddLessonViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 
 class EditLessonViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
+    login_url = 'login'
     permission_required = ''
 
     def get(self, request, lesson_id):
@@ -323,6 +339,7 @@ def delete_lesson_file(request, lesson_file_id):
 
 
 class AboutCoursesViewset(LoginRequiredMixin, View):
+    login_url = 'login'
     def get(self, request, course_id):
         course = get_object_or_404(Group, id=course_id)
         context = {
@@ -332,24 +349,26 @@ class AboutCoursesViewset(LoginRequiredMixin, View):
 
 
 class ViewCoursesViewset(LoginRequiredMixin, View):
-    login_url = ''
+    login_url = 'login'
     def get(self, request, course_id):
         course = Group.objects.get(id=course_id)
         lessons = Lesson.objects.filter(group=course)
         context = {
             'lessons': lessons
         }
-        return TemplateResponse(request, "view-course.html", context)
+        return TemplateResponse(request, "view-lessons.html", context)
     
 
-class Attendance(LoginRequiredMixin, PermissionRequiredMixin, View):
-    permission_required = ''
-    login_url = ""
+class Attendance(LoginRequiredMixin, View):
+    # permission_required = 'teacher.change_score_attendance'
+    login_url = "login"
     def get(self, request, lesson_id):
+        print('88888888888888888888888888888888888888888888888888')
+        print(request.user.get_all_permissions())
+        print('88888888888888888888888888888888888888888888888888')
         lesson = Lesson.objects.get(id=lesson_id)
         group = lesson.group
         students = group.student_set.all()
-        print('88888888888888888888888888888888888888888888888888')
         print(students)
         print(lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
         print('88888888888888888888888888888888888888888888888888')
