@@ -1,0 +1,90 @@
+﻿{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Edumin - Bootstrap Admin Dashboard </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href='{% static "images/favicon.png" %}'>
+    <link href='{% static "css/style.css" %}' rel="stylesheet">
+
+</head>
+
+<body class="h-100">
+    <div class="authincation h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <h4 class="text-center mb-4">Sign up your account</h4>
+                                    <form action="{% url 'register' %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for=""><strong>First Name</strong></label>
+                                            <input type="text" class="form-control" name="first_name" placeholder="First Name">
+                                            <ul class="text-danger">
+                                                {{form.first_name.errors}}
+                                            </ul>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for=""><strong>Last Name</strong></label>
+                                            <input type="text" class="form-control" name="last_name" placeholder="Last Name">
+                                            <ul class="text-danger">
+                                                {{form.last_name.errors}}
+                                            </ul>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for=""><strong>Email</strong></label>
+                                            <input type="email" name="email" class="form-control" placeholder="hello@example.com" id="">
+                                            <ul class="text-danger">
+                                                {{form.email.errors}}
+                                            </ul>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Password</strong></label>
+                                            <input type="password" class="form-control passwordinput" required name="password1" value="">
+                                            <ul class="text-danger">
+                                                {{form.password1.errors}}
+                                            </ul>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Password Confirmation</strong></label>
+                                            <input type="password" class="form-control passwordinput" required name="password2" value="">
+                                            <ul class="text-danger">
+                                                {{form.password2.errors}}
+                                            </ul>
+                                        </div>
+                                        <div class="text-center mt-4">
+                                            <button type="submit" class="btn btn-primary btn-block">Sign me up</button>
+                                        </div>
+                                    </form>
+                                    <div class="new-account mt-3">
+                                        <p>Already have an account? <a class="text-primary" href="{% url 'login' %}">Sign in</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="vendor/global/global.min.js"></script>
+	<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="js/dlabnav-init.js"></script>
+    <!--endRemoveIf(production)-->
+</body>
+
+</html>

@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'teacher',
     'crispy_forms',
     'crispy_bootstrap5',
-    'login',
-   
 ]
 
 MIDDLEWARE = [

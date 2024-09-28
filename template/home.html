@@ -309,10 +309,10 @@
                                                 <th class="py-3">Edit</th>
                                             </tr>
                                         </thead>
+                                        {% for student in new_students %}
                                         <tbody id="customers">
-                                            {% for student in new_students %}
+                                            {% for group in student.group.all %}
                                             <tr class="btn-reveal-trigger">
-                                                {% for group in student.group.all %}
                                                 <td class="p-3">
                                                     <a href="javascript:void(0);">
                                                         <div class="media d-flex align-items-center">
@@ -332,10 +332,10 @@
                                                     <a href="{% url 'edit_student' student.id %}" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
                                                     <a href="{% url 'delete_student' student.id %}" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
                                                 </td>
-                                                {% endfor %}
                                             </tr>
                                             {% endfor %}
                                         </tbody>
+                                        {% endfor %}
                                     </table>
                                 </div>
                             </div>
