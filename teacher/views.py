@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
+from django.urls import reverse
 from django.views import View
 
 from teacher.forms import AddCourseForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, \
@@ -331,6 +332,7 @@ class AboutCoursesViewset(LoginRequiredMixin, View):
 
 
 class ViewCoursesViewset(LoginRequiredMixin, View):
+    login_url = ''
     def get(self, request, course_id):
         course = Group.objects.get(id=course_id)
         lessons = Lesson.objects.filter(group=course)
@@ -340,7 +342,9 @@ class ViewCoursesViewset(LoginRequiredMixin, View):
         return TemplateResponse(request, "view-course.html", context)
     
 
-class Attendance(View):
+class Attendance(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = ''
+    login_url = ""
     def get(self, request, lesson_id):
         lesson = Lesson.objects.get(id=lesson_id)
         group = lesson.group
