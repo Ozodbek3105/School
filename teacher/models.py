@@ -1,6 +1,8 @@
+import os
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.contrib.auth.models import Group, PermissionsMixin
+from requests import delete
 
 
 # Create your models here.
@@ -65,7 +67,7 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
     date_of_birth = models.DateField(null=True, blank=True)
     education = models.CharField(max_length=300, null=True, blank=False)
     profile_photo = models.ImageField(upload_to='professors/profile_photo', null=True, blank=True)
-    skills = models.ManyToManyField('Skill', blank=False)
+    skills = models.ManyToManyField('Skill', blank=True)
 
     objects = TeacherManager()
 
@@ -76,7 +78,7 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
-   
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
@@ -92,11 +94,18 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'
 
-    class Meta:
-        permissions = [
-            ('add_professor', 'Can add a professor'),
-            # add other custom permissions if necessary
-        ]
+    def delete(self, using =None, keep_parents =False):
+        if self.profile_photo:
+            path = self.profile_photo.path
+            if path:
+                os.remove(path)
+        return super().delete(using, keep_parents)
+
+    # class Meta:
+    #     permissions = [
+    #         ('add_professor', 'Can add a professor'),
+    #         # add other custom permissions if necessary
+    #     ]
 
 
 class Skill(models.Model):
@@ -112,7 +121,7 @@ class GroupSpec(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 LANG_CHOICES = (
@@ -139,6 +148,13 @@ class Group(models.Model):
     def __str__(self):
         return f'{self.name}. Language: {self.lang}'
 
+    def delete(self, using =None, keep_parents =False):
+        if self.group_photo:
+            path = self.group_photo.path
+            if path:
+                os.remove(path)
+        return super().delete(using, keep_parents)
+
 
 class Student(models.Model):
     first_name = models.CharField(max_length=100)
@@ -156,13 +172,46 @@ class Student(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name} {self.surname}'
 
+    def delete(self, using = ..., keep_parents = ...):
+        if self.profile_photo:
+            path = self.profile_photo.path
+            os.remove(path)
+        return super().delete(using, keep_parents)
+
+
+def lesson_file_upload_path(instance, file_name):
+    if instance.lesson.group.name.name:
+        return f"lessons/{instance.lesson.group.name.name}/{file_name}"
+    else:
+        group_name = 'Unknown'
+        return f"lessons/{group_name}/{file_name}"
+    
 
 class Lesson(models.Model):
     theme = models.CharField(max_length=255)
     date = models.DateField()
     description = models.CharField(max_length=255)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    file = models.FileField(upload_to=f"lessons/{group.name}",)
+
+    def __str__(self):
+        return f"{self.theme}"
+
+class LessonFiles(models.Model):
+    file = models.FileField(null=True, blank=True, upload_to=lesson_file_upload_path)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.file.name}'
+    
+    # def delete(self, using =None, keep_parents =False):
+    #     if self.file:
+    #         file_path = self.file.path
+    #         if file_path:
+    #             os.remove(file_path)
+    #     return super().delete(using, keep_parents)
+
+    class Meta:
+        verbose_name_plural = "LessonFiles"
 
 
 class Score_Attendance(models.Model):
