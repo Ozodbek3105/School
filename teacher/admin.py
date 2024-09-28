@@ -17,7 +17,7 @@ class StudentForm(forms.ModelForm):
 class StudentAdmin(admin.ModelAdmin):
     form = StudentForm
     list_display = ['id', 'first_name', 'last_name', 'email', 'phone', 'gender', 'created_at']
-    ordering = ("id", "first_name", "last_name", "group")
+    ordering = ("id", "first_name", "last_name")
     sortable_by = ("gender",)
     list_display_links = ['id', 'first_name', 'last_name', 'email']
 

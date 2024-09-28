@@ -217,7 +217,7 @@ class LessonFiles(models.Model):
 class Score_Attendance(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=True, null=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, blank=True)
-    mark = models.DecimalField(null=True, decimal_places=1, max_digits=2)
+    mark = models.DecimalField(null=True, blank=True, decimal_places=1, max_digits=2)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_present = models.BooleanField(default=True)
