@@ -23,6 +23,5 @@ urlpatterns = [
     path('all_lessons/', AllLessonsViewset.as_view(), name='all_lessons'),
     path('edit_lesson/<int:lesson_id>', EditLessonViewset.as_view(), name='edit_lesson'),
     path('delete_lesson_file/<int:lesson_file_id>/', delete_lesson_file, name='delete_lesson_file'),
-    path('view_course/<int:course_id>', ViewCoursesViewset.as_view(), name='view_course'),
     path('attendance/<int:lesson_id>', Attendance.as_view(), name='attendance')
 ]

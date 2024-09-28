@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
 <html lang="en" class="h-100">
 
 <head>
@@ -7,8 +9,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Edumin - Bootstrap Admin Dashboard </title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
-    <link href="css/style.css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="16x16" href='{% static "images/favicon.png" %}'>
+    <link href='{% static "css/style.css"%}' rel="stylesheet">
 
 </head>
 
@@ -22,14 +24,17 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
                                     <h4 class="text-center mb-4">Sign in your account</h4>
-                                    <form action="index.html">
+                                    <form action="{% url 'login' %}" method="post">
+                                        {% csrf_token %}
+                                        <ul class="text-danger">{{form.non_field_errors}}</ul>
                                         <div class="form-group">
                                             <label><strong>Email</strong></label>
-                                            <input type="email" class="form-control" value="hello@example.com">
+                                            <input type="email" class="form-control" name="username" placeholder="hello@example.com">
                                         </div>
                                         <div class="form-group">
                                             <label><strong>Password</strong></label>
-                                            <input type="password" class="form-control" value="Password">
+                                            <input type="password" class="form-control" name="password" placeholder="Password">
+                                            {{form.password.errors}}
                                         </div>
                                         <div class="form-row d-flex justify-content-between mt-4 mb-2">
                                             <div class="form-group">
