@@ -47,10 +47,11 @@ class AuthenticateProfessor(View):
             if user is not None:
                 auth.login(request,user)
                 return redirect('home')
-        context = {
+        else:
+            context = {
             'form': form,
-        }
-        return TemplateResponse(request,'page-login.html',context)
+        }   
+            return TemplateResponse(request,'page-login.html',context)
     
 
 class LogoutProfessor(View):
