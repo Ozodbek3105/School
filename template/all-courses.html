@@ -15,7 +15,6 @@
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Courses</a></li>
                             <li class="breadcrumb-item active"><a href="javascript:void(0);">All Courses</a></li>
                         </ol>
                     </div>
@@ -42,11 +41,11 @@
 									<li class="list-group-item px-0 d-flex justify-content-between">
 										<span><i class="fa fa-graduation-cap text-primary mr-2"></i>Student</span><strong>+{{course.max_student}}</strong></li>
 								</ul>
-								<a href='{% url "about_course" course.id %}' class="btn btn-primary mb-1">Read More</a>
-                                <a href='{% url "edit_course" course.id %}' class="btn btn-primary mb-1">Edit course</a>
-                                <a href='{% url "delete_course" course.id %}' class="btn btn-danger mb-1">Delete course</a>
-                                <a href='{% url "view_course" course.id %}' class="btn btn-success mb-1">View</a>
                             </div>
+                            <a href='{% url "about_course" course.id %}' class="btn btn-outline-primary p-1 mx-2 mb-2">Read More</a>
+                            <a href='{% url "edit_course" course.id %}' class="btn btn-outline-warning p-1 mx-2 mb-2">Edit course</a>
+                            <a href='{% url "delete_course" course.id %}' class="btn btn-outline-danger p-1 mx-2 mb-2">Delete course</a>
+                            <a href='{% url "view_course" course.id %}' class="btn btn-outline-success p-1 mx-2 mb-2">View</a>
 						</div>
 					</div>
                     {% endfor %}

@@ -78,6 +78,9 @@
                                             {% endif %}
                                             {% endfor %}
                                         </select>
+                                        <ul class="errorlist text-danger">
+                                                {{form.department.errors}}
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">
@@ -87,9 +90,9 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="form-group">
-                                        <label class="form-label">Department</label>
+                                        <label class="form-label">Department*</label>
                                         <select class="form-control" name="department">
-                                            <option value="Department">Department</option>
+                                            <option value="Department"></option>
                                             {% for dep in form.department.field.queryset %}
                                             {% if dep.id == form.initial.department %}
                                             <option value="{{dep.id}}" selected>{{dep.name}}</option>
@@ -98,11 +101,15 @@
                                             {% endif %}
                                             {% endfor %}
                                         </select>
+                                        <ul class="errorlist text-danger">
+                                            {{form.department.errors}}
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="form-group">
-                                        {{form.date_of_birth|as_crispy_field}}
+                                        <label for="">Date of Birth</label>
+                                        <input type="text" name="date_of_birth" value="{{form.initial.date_of_birth}}" class="dateinput form-control" placeholder="2000-01-01">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">

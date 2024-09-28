@@ -169,7 +169,7 @@ class Student(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     birthday = models.DateField(null=True) 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} {self.surname}'
+        return f'{self.first_name} {self.last_name}'
 
     def delete(self, using = ..., keep_parents = ...):
         if self.profile_photo:
@@ -214,14 +214,15 @@ class LessonFiles(models.Model):
 
 
 class Score_Attendance(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    mark = models.IntegerField(null=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=True, null=True)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, blank=True)
+    mark = models.DecimalField(null=True, blank=True, decimal_places=1, max_digits=2)
+    created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    was_present = models.BooleanField(default=True)
+    is_present = models.BooleanField(default=True)
 
-
+    def __str__(self):
+        return f'{self.student}'
 # class Attendance(models.Model):
 #     student = models.ForeignKey(Student, on_delete=models.CASCADE)
 #     lesson = models.ForeignKey(Lesson,  on_delete=models.CASCADE)

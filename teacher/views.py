@@ -1,14 +1,15 @@
+import datetime
+
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.views import View
 
-from teacher.forms import AddCourseForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditStudentForm
-
-from django.contrib.auth import get_user_model
-
-from teacher.models import Group, Lesson, LessonFiles,Student
+from teacher.forms import AddCourseForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, \
+    AddStudentForm, EditStudentForm, StudentsAttendanceFormSet
+from teacher.models import Group, Lesson, LessonFiles, Score_Attendance, Student
 
 # Create your views here.
 
@@ -18,6 +19,7 @@ User = get_user_model()
 
 class AllProfessorsViewset(LoginRequiredMixin, View):
     login_url = ""
+
     def get(self, request):
         teachers = User.objects.all()
         context = {"teachers": teachers}
@@ -47,6 +49,7 @@ class AddProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 class EditProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'teacher.change_teacher'
+
     def get(self, request, professor_id):
         teacher = get_object_or_404(User, id=professor_id)
         form = AddProfessorForm(instance=teacher)
@@ -83,6 +86,7 @@ class ProfessorProfileViewset(LoginRequiredMixin, View):
 
 class DeleteProfessorViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
     permission_required = ["teacher.delete_teacher"]
+
     def get(self, request, professor_id=None):
         if professor_id:
             teacher = get_object_or_404(User, id=professor_id)
@@ -103,6 +107,7 @@ class AllStudentsViewset(LoginRequiredMixin, View):
 
 class AddStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'teacher.add_student'
+
     def get(self, request):
         form = AddStudentForm()
         context = {
@@ -117,12 +122,12 @@ class AddStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
             return redirect("all_students")
         context = {'form': form}
         print(form.errors)
-        print(form.data)
         return TemplateResponse(request, "add-student.html", context)
     
 
 class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'teacher.change_student'
+
     def get(self, request,student_id):
         student = get_object_or_404(Student, id=student_id)
         form = EditStudentForm(instance=student)
@@ -131,6 +136,7 @@ class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
             "student":student,
         }
         return TemplateResponse(request, 'edit-student.html',context)
+
     def post(self,request,student_id):
         student = get_object_or_404(Student, id=student_id)
         form = EditStudentForm(request.POST,request.FILES,instance=student)
@@ -147,6 +153,7 @@ class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 class DeleteStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'teacher.delete_student'
+
     def post(self, request, student_id):
         student = Student.objects.get(id=student_id)
         student.delete()
@@ -169,6 +176,7 @@ class AllCoursesViewset(LoginRequiredMixin, View):
 
 class AddCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'teacher.add_course'
+
     def get(self, request):
         form = AddCourseForm()
         context = {
@@ -191,6 +199,7 @@ class AddCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 class EditCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'teacher.edit_course'
+
     def get(self, request, course_id):
         course = get_object_or_404(Group, id=course_id)
         form = AddCourseForm(instance=course)
@@ -217,6 +226,7 @@ class EditCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 class DeleteCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'teacher.delete_course'
+
     def get(self, request, course_id):
         course = get_object_or_404(Group, id=course_id)
         course.delete()
@@ -235,6 +245,7 @@ class AllLessonsViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 class AddLessonViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'teacher.add_lesson'
+
     def get(self, request):
         form = AddLessonForm()
         context = {
@@ -263,6 +274,7 @@ class AddLessonViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 class EditLessonViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
     permission_required = ''
+
     def get(self, request, lesson_id):
         lesson = Lesson.objects.get(id=lesson_id)
         files = LessonFiles.objects.filter(lesson=lesson)
@@ -325,9 +337,66 @@ class ViewCoursesViewset(LoginRequiredMixin, View):
         context = {
             'lessons': lessons
         }
-        return TemplateResponse(request, "view-lessons.html", context)
+        return TemplateResponse(request, "view-course.html", context)
     
 
 class Attendance(View):
     def get(self, request, lesson_id):
-        return TemplateResponse(request, "yoqlama.html")
+        lesson = Lesson.objects.get(id=lesson_id)
+        group = lesson.group
+        students = group.student_set.all()
+        print('88888888888888888888888888888888888888888888888888')
+        print(students)
+        print(lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
+        print('88888888888888888888888888888888888888888888888888')
+        
+        # if not lesson.score_attendance_set.filter(lesson=lesson, student__in=students):
+        Score_Attendance.objects.bulk_create(
+            Score_Attendance(lesson=lesson, student=student) for student in students
+            if not Score_Attendance.objects.filter(lesson=lesson, student=student).exists()
+        )
+        # formset = StudentsAttendanceFormSet(queryset=Score_Attendance.objects.filter(
+        #     created_at__exact=datetime.date.today())
+        # )
+        # for att in Score_Attendance.objects.filter(lesson)
+        formset = StudentsAttendanceFormSet(queryset=lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
+        print(lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
+        context = {
+            'formset': formset,
+            'lesson': lesson,
+            'group': group
+        }
+        return TemplateResponse(request, "yoqlama.html", context)
+
+    def post(self, request, lesson_id):
+        lesson = Lesson.objects.get(id=lesson_id)
+        queryset = Score_Attendance.objects.filter(created_at__exact=datetime.date.today())
+        formset = StudentsAttendanceFormSet(request.POST, queryset=queryset)
+        group = lesson.group
+        students = group.student_set.all()
+        if formset.is_valid():
+            print("//////////////////////////////////////////////")
+            print(formset)
+            print("//////////////////////////////////////////////")
+            instances = formset.save(commit=False)
+
+            for form, student in zip(instances, students):
+                form.lesson = lesson
+                form.student = student
+                form.save()
+
+            return redirect('view_course', group.id)
+        
+        for form, student in zip(formset.forms, students):
+            form.instance.student = student
+
+        context = {
+            'formset': formset,
+            'lesson': lesson,
+            'group': group
+        }
+        print(queryset)
+        # print(formset)
+        print(formset.errors)
+        return TemplateResponse(request, 'yoqlama.html', context)
+    

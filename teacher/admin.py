@@ -17,7 +17,7 @@ class StudentForm(forms.ModelForm):
 class StudentAdmin(admin.ModelAdmin):
     form = StudentForm
     list_display = ['id', 'first_name', 'last_name', 'email', 'phone', 'gender', 'created_at']
-    ordering = ("id", "first_name", "last_name", "group")
+    ordering = ("id", "first_name", "last_name")
     sortable_by = ("gender",)
     list_display_links = ['id', 'first_name', 'last_name', 'email']
 
@@ -50,6 +50,10 @@ class LessonFilesAdmin(admin.ModelAdmin):
     list_display = ["id", "file", "lesson"]
 
 
+class Score_AttendanceAdmin(admin.ModelAdmin):
+    list_display = ['id', 'student', 'lesson', 'mark', 'is_present']
+
+
 # Register your models here.
 admin.site.register(Teacher, TeacherAdmin)
 # admin.site.register(TeacherManager)
@@ -57,7 +61,7 @@ admin.site.register(GroupSpec)
 admin.site.register(Group)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Lesson)
-admin.site.register(Score_Attendance)
+admin.site.register(Score_Attendance, Score_AttendanceAdmin)
 admin.site.register(Skill)
 admin.site.register(GroupLikes)
 admin.site.register(LessonFiles, LessonFilesAdmin)
