@@ -337,7 +337,7 @@ class ViewCoursesViewset(LoginRequiredMixin, View):
         context = {
             'lessons': lessons
         }
-        return TemplateResponse(request, "view-lessons.html", context)
+        return TemplateResponse(request, "view-course.html", context)
     
 
 class Attendance(View):
@@ -347,21 +347,24 @@ class Attendance(View):
         students = group.student_set.all()
         print('88888888888888888888888888888888888888888888888888')
         print(students)
-        print(lesson.score_attendance_set.filter(lesson=lesson))
+        print(lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
         print('88888888888888888888888888888888888888888888888888')
         
-        if not lesson.score_attendance_set.filter(lesson=lesson):
-            Score_Attendance.objects.bulk_create(
-                Score_Attendance(lesson=lesson, student=student) for student in students
-                if not Score_Attendance.objects.filter(lesson=lesson, student=student, created_at__exact=datetime.date.today()).exists()
-            )
+        # if not lesson.score_attendance_set.filter(lesson=lesson, student__in=students):
+        Score_Attendance.objects.bulk_create(
+            Score_Attendance(lesson=lesson, student=student) for student in students
+            if not Score_Attendance.objects.filter(lesson=lesson, student=student).exists()
+        )
         # formset = StudentsAttendanceFormSet(queryset=Score_Attendance.objects.filter(
         #     created_at__exact=datetime.date.today())
         # )
-        formset = StudentsAttendanceFormSet(queryset=lesson.score_attendance_set.filter(lesson=lesson))
+        # for att in Score_Attendance.objects.filter(lesson)
+        formset = StudentsAttendanceFormSet(queryset=lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
+        print(lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
         context = {
             'formset': formset,
             'lesson': lesson,
+            'group': group
         }
         return TemplateResponse(request, "yoqlama.html", context)
 
@@ -390,6 +393,7 @@ class Attendance(View):
         context = {
             'formset': formset,
             'lesson': lesson,
+            'group': group
         }
         print(queryset)
         # print(formset)
