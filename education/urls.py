@@ -20,7 +20,7 @@ from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
 
-from login.views import AddManagerViewset
+from login.views import AddManagerViewset, AuthenticateProfessor, LogoutProfessor
 
 from .views import home
 
@@ -28,5 +28,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", home, name="home"),
     path("addManager/", AddManagerViewset.as_view(), name="addManager"),
+    path("authentication_professor/", AuthenticateProfessor.as_view(), name="auth_professor"),
+    path("Logoutprofessor/", LogoutProfessor.as_view(), name="logoutprofessor"),
     path('education/', include('teacher.urls'))
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

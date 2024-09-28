@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿{% load static %}
+<!DOCTYPE html>
 <html lang="en" class="h-100">
 
 <head>
@@ -7,8 +8,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Edumin - Bootstrap Admin Dashboard </title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
-    <link href="css/style.css" rel="stylesheet">
+    <link rel="icon" type="{% static 'image/png' %}" sizes="16x16" href="{% static 'images/favicon.png' %}">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
 </head>
 
@@ -22,8 +23,10 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
                                     <h4 class="text-center mb-4">Sign in your account</h4>
-                                    <form action="index.html">
-                                        <div class="form-group">
+                                    <form action="/">
+                                        {% csrf_token %}
+                                        {{form}}
+                                        <!-- <div class="form-group">
                                             <label><strong>Email</strong></label>
                                             <input type="email" class="form-control" value="hello@example.com">
                                         </div>
@@ -41,13 +44,13 @@
                                             <div class="form-group">
                                                 <a href="page-forgot-password.html">Forgot Password?</a>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary btn-block">Sign me in</button>
                                         </div>
                                     </form>
                                     <div class="new-account mt-3">
-                                        <p>Don't have an account? <a class="text-primary" href="page-register.html">Sign up</a></p>
+                                        <p>Don't have an account? <a class="text-primary" href="{% url 'addManager' %}">Sign up</a></p>
                                     </div>
                                 </div>
                             </div>
