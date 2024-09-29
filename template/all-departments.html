@@ -1,0 +1,78 @@
+﻿{% extends 'base.html' %}
+{% load static %}	
+{% block content %}	
+<!--**********************************
+    Content body start
+***********************************-->
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+            
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>All Departments</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="{% url 'department' %}">Departments</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0);">All Departments</a></li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Department List</h4>
+                        <a href="{% url 'add_department' %}" class="btn btn-primary"> + Add List</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="example5" class="display" style="min-width: 845px">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Department</th>
+                                        <th>Head Of Dept.</th>
+                                        <th>Mobile</th>
+                                        <th>Email</th>
+                                        <th>Starting Year</th>
+                                        <th>Stu. Capacity</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for department in departments %}
+                                    <tr>
+                                        <td>{{department.id}}</td>
+                                        <td>{{department.name}}</td>
+                                        <td>{{department.head_of_department}}</td>
+                                        <td><a href="javascript:void(0);"><strong>{{department.phone}}</strong></a></td>
+                                        <td><a href="javascript:void(0);"><strong>{{department.email}}</strong></a></td>
+                                        <td>{{department.starting_year}}</td>
+                                        <td>{{department.student_capacity}}</td>
+                                        <td>
+                                            <a href="{% url 'edit_department' department.id %}" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
+                                            <a href="{% url 'delete_department' department.id %}" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
+                                        </td>												
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+{% endblock %}
+

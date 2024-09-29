@@ -1,0 +1,98 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<!--**********************************
+    Content body start
+***********************************-->
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+            
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Edit Departments</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0);">Departments</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0);">Edit Departments</a></li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Edit Department</h5>
+                    </div>
+                    <div class="card-body">
+                       <form action="{% url 'edit_department' department.id %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        {{ form.name|as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Head of Department</label>
+                                        <select class="form-control" name="head_of_department">
+                                        <option value="Department">Choose...</option>
+                                        {% for professor in form.head_of_department.field.queryset %}
+                                        {% if professor.id == form.initial.professor.id %}
+                                        <option value="{{professor.id}}" selected>{{professor.first_name}}</option>
+                                        {% else %}
+                                        <option value="{{professor.id}}">{{professor.first_name}}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                        </select>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        {{ form.starting_year|as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        {{ form.phone|as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        {{ form.email|as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        {{ form.student_capacity|as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        {{ form.description|as_crispy_field}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-light">Cencel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+{% endblock %}
