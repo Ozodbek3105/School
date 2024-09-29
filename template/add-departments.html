@@ -40,37 +40,7 @@
 												{{ form.name|as_crispy_field }}
 											</div>
 										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-                                            <div class="form-group">
-                                                <label class="form-label">Professor Name</label>
-                                                <select name="head_of_department" class="form-control">
-                                                <option value="Department">Choose...</option>
-                                                {% for professor in form.head_of_department.field.queryset %}
-                                                <option value="{{professor.id}}">{{professor.first_name}}</option>
-                                                {% endfor %}
-                                                </select>
-                                            </div>
-                                        </div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												{{ form.starting_year|as_crispy_field }}
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												{{ form.phone|as_crispy_field }}
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												{{ form.email|as_crispy_field }}
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												{{ form.student_capacity|as_crispy_field }}
-											</div>
-										</div>
+                                        
 										<div class="col-lg-12 col-md-12 col-sm-12">
 											<div class="form-group">
 												{{ form.description|as_crispy_field}}
