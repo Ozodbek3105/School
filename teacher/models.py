@@ -245,7 +245,7 @@ class Deparment(models.Model):
     email = models.EmailField(max_length=100)
     starting_year = models.DateField(null=False)
     student_capacity = models.IntegerField(null=False)
-
+    description = models.TextField(null=True)
 
     def str(self):
         return f"{self.name}"

@@ -1,3 +1,4 @@
+from ast import Add
 import datetime
 
 from django.contrib.auth import get_user_model
@@ -8,9 +9,9 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views import View
 
-from teacher.forms import AddCourseForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, \
+from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, \
     AddStudentForm, EditStudentForm, StudentsAttendanceFormSet
-from teacher.models import Group, Lesson, LessonFiles, Score_Attendance, Student
+from teacher.models import  Deparment, Group, Lesson, LessonFiles, Score_Attendance, Student
 
 # Create your views here.
 
@@ -422,4 +423,72 @@ class Attendance(LoginRequiredMixin, View):
         # print(formset)
         print(formset.errors)
         return TemplateResponse(request, 'yoqlama.html', context)
+
+
+class AllDepartmentViewset(View):
+
+    def get(self, request):
+        departments = Deparment.objects.all()
+        context = {
+            "departments": departments
+            }
+        return TemplateResponse(request, 'all-departments.html', context)
+
+
+class AddDepartmentViewset(LoginRequiredMixin,View):
+    login_url = 'login'
+    def get( self, request ):
+        form = AddDepartmentForm()
+        context = {
+            "form": form
+        }
+        return TemplateResponse(request, "add-departments.html",context)
+    def post( self, request ):
+        form = AddDepartmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("department")
+        context = {
+            'form':form 
+        }
+        print("99999999999999999999999999999999999999999999",form.errors)
+        print("00000000000000000000000000000000000000000000",form.data)
+        return TemplateResponse(request,"add-departments.html",context)
     
+
+
+class EditDepartmentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
+    permission_required = 'teacher.edit_department'
+
+    def get(self, request, department_id):
+        department = get_object_or_404(Deparment, id=department_id)
+        form = AddDepartmentForm(instance=department)
+        context = {
+            'form': form,
+            'department': department
+        }
+        return TemplateResponse(request, 'edit-department.html', context)
+    
+    def post(self, request, department_id):
+        department = get_object_or_404(Deparment, id=department_id)
+        form = AddDepartmentForm(request.POST, request.FILES, instance=department)
+        if form.is_valid():
+            form.save()
+            return redirect('department')
+        context = {
+            'form': form,
+            'department': department
+        }
+        print(form.errors)
+        print(form.data)
+        return TemplateResponse(request, 'edit-department.html', context)
+    
+class DeleteDepartmentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
+    permission_required = 'teacher.delete_department'
+
+    def get(self, request, department_id):
+        department = get_object_or_404(Deparment, id=department_id)
+        department.delete()
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER", ""))
