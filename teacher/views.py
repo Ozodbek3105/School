@@ -56,12 +56,12 @@ class EditProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
     def get(self, request, professor_id):
         teacher = get_object_or_404(User, id=professor_id)
-        form = AddProfessorForm(instance=teacher)
+        form = EditProfessorForm(instance=teacher)
         context = {
             'form': form,
             "teacher": teacher,
         }
-        print(form.as_p())
+        # print(form.as_p())
         print('caafaw ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd  ')
         return TemplateResponse(request, 'edit-professor.html', context)
     

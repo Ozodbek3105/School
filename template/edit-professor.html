@@ -34,6 +34,9 @@
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="form-group">
                                         {{form.first_name|as_crispy_field}}
+                                        <ul>
+                                            {{form.first_name.errors}}
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">
@@ -54,11 +57,17 @@
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="form-group">
                                         {{form.password1|as_crispy_field}}
+                                        <ul class="text-danger">
+                                            {{form.non_field_errors}}
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="form-group">
                                         {{form.password2|as_crispy_field}}
+                                        <ul class="text-danger">
+                                            {{form.non_field_errors}}
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">
