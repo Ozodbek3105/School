@@ -1,7 +1,7 @@
+from os import name
 from django.urls import path
 
-from teacher.views import *
-
+from .views import *
 urlpatterns = [
     path('all_professors/', AllProfessorsViewset.as_view(), name='all_professors'),
     path('add_professor/', AddProfessorViewset.as_view(), name='add_professor'),
@@ -23,5 +23,9 @@ urlpatterns = [
     path('all_lessons/', AllLessonsViewset.as_view(), name='all_lessons'),
     path('edit_lesson/<int:lesson_id>', EditLessonViewset.as_view(), name='edit_lesson'),
     path('delete_lesson_file/<int:lesson_file_id>/', delete_lesson_file, name='delete_lesson_file'),
-    path('attendance/<int:lesson_id>', Attendance.as_view(), name='attendance')
+    path('attendance/<int:lesson_id>', Attendance.as_view(), name='attendance'),
+    path('all_department/', AllDepartmentViewset.as_view(),name='department'),
+    path('add_department/',AddDepartmentViewset.as_view(),name="add_department"),
+    path('edit_department/<int:department_id>/',EditDepartmentViewset.as_view(),name="edit_department"),
+    path('delete_department/<int:department_id>/',DeleteDepartmentViewset.as_view(),name="delete_department")
 ]

@@ -1,3 +1,4 @@
+import django.db.models.deletion
 import os
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
@@ -234,5 +235,5 @@ class GroupLikes(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     session_id = models.CharField(max_length=255)
 
-    def __str__(self) -> str:
-        return f'{self.user.first_name}'
+
+

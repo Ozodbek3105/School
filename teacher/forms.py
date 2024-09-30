@@ -6,7 +6,7 @@ from faker import Faker
 from django.contrib.auth import get_user_model
 from django.forms import modelformset_factory
 from django.db import models
-from teacher.models import Group, Lesson, Score_Attendance, Student
+from teacher.models import   Group, GroupSpec, Lesson, Score_Attendance, Student
 
 fake = Faker()
 
@@ -65,13 +65,13 @@ class EditProfessorForm(forms.ModelForm):
                   'department', 'date_of_birth', 'education', 'profile_photo', 'date_joined']
 
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': "New Password"}),
+        widget=forms.PasswordInput(attrs={'placeholder': "New Password", "type": "password"}),
         label="New Passwor",
         required=False,
     )
 
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "Confirm New Password"}),
+        widget=forms.PasswordInput(attrs={"placeholder": "Confirm New Password", 'type': 'password'}),
         label="Confirm New Password",
         required=False
     )
@@ -80,6 +80,7 @@ class EditProfessorForm(forms.ModelForm):
         clean_data = super().clean()
         password1 = clean_data.get("password1", '')
         password2 = clean_data.get("password2", '')
+        print(clean_data)
         if password1 and password2:
             if password1 != password2:
                 raise forms.ValidationError('Password does not match')
@@ -87,9 +88,11 @@ class EditProfessorForm(forms.ModelForm):
         return clean_data
     
     def save(self, commit: bool = True) -> Any:
-        user = super().save(commit)
+        user = super().save(commit=False)
         if self.cleaned_data.get('password1') and self.cleaned_data.get('password2'):
             user.set_password(self.cleaned_data.get('password2'))
+        if commit:
+            user.save()
         return user
 
 
@@ -102,7 +105,7 @@ class AddCourseForm(forms.ModelForm):
 class AddStudentForm(forms.ModelForm):  
     class Meta:
         model = Student
-        fields = ("first_name", "last_name", "email", "phone", "address", "group", "profile_photo", "gender")
+        fields = ("first_name", "last_name","surname","email","phone","address","group","education","profile_photo","gender","birthday")
         widgets = {
             "gender":forms.Select
         }
@@ -139,3 +142,9 @@ class EditLessonForm(forms.ModelForm):
 #         fields = ["student", 'lesson', 'mark', 'is_present']
 
 StudentsAttendanceFormSet = modelformset_factory(model=Score_Attendance, fields=["student", 'lesson', 'mark', 'is_present'], extra=0)
+
+
+class AddDepartmentForm(forms.ModelForm):
+    class Meta:
+        model = GroupSpec
+        fields = ['name','description']
