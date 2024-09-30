@@ -237,15 +237,3 @@ class GroupLikes(models.Model):
 
 
 
-
-class Deparment(models.Model):
-    name = models.CharField(max_length=100)
-    head_of_department = models.ForeignKey(Teacher, on_delete=models.CASCADE,)
-    phone = models.CharField(max_length=100, unique=True, null=True)
-    email = models.EmailField(max_length=100)
-    starting_year = models.DateField(null=False)
-    student_capacity = models.IntegerField(null=False)
-    description = models.TextField(null=True)
-
-    def str(self):
-        return f"{self.name}"

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.hashers import make_password
 
-from teacher.models import  Deparment, Group, GroupLikes, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student, Teacher, TeacherManager
+from teacher.models import   Group, GroupLikes, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student, Teacher, TeacherManager
 
 class StudentForm(forms.ModelForm):
     class Meta:
@@ -54,11 +54,10 @@ class Score_AttendanceAdmin(admin.ModelAdmin):
     list_display = ['id', 'student', 'lesson', 'mark', 'is_present']
 
 class DeparmentAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name','phone','email','starting_year',"student_capacity"]
+    list_display = ['id', 'name',"description"]
 # Register your models here.
 admin.site.register(Teacher, TeacherAdmin)
 # admin.site.register(TeacherManager)
-admin.site.register(GroupSpec)
 admin.site.register(Group)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Lesson)
@@ -66,4 +65,4 @@ admin.site.register(Score_Attendance, Score_AttendanceAdmin)
 admin.site.register(Skill)
 admin.site.register(GroupLikes)
 admin.site.register(LessonFiles, LessonFilesAdmin)
-admin.site.register(Deparment,DeparmentAdmin)
+admin.site.register(GroupSpec,DeparmentAdmin)

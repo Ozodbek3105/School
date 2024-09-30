@@ -11,7 +11,7 @@ from django.views import View
 
 from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, \
     AddStudentForm, EditStudentForm, StudentsAttendanceFormSet
-from teacher.models import  Deparment, Group, Lesson, LessonFiles, Score_Attendance, Student
+from teacher.models import   Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Student
 
 # Create your views here.
 
@@ -428,7 +428,7 @@ class Attendance(LoginRequiredMixin, View):
 class AllDepartmentViewset(View):
 
     def get(self, request):
-        departments = Deparment.objects.all()
+        departments = GroupSpec.objects.all()
         context = {
             "departments": departments
             }
@@ -462,7 +462,7 @@ class EditDepartmentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'teacher.edit_department'
 
     def get(self, request, department_id):
-        department = get_object_or_404(Deparment, id=department_id)
+        department = get_object_or_404(GroupSpec, id=department_id)
         form = AddDepartmentForm(instance=department)
         context = {
             'form': form,
@@ -471,7 +471,7 @@ class EditDepartmentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
         return TemplateResponse(request, 'edit-department.html', context)
     
     def post(self, request, department_id):
-        department = get_object_or_404(Deparment, id=department_id)
+        department = get_object_or_404(GroupSpec, id=department_id)
         form = AddDepartmentForm(request.POST, request.FILES, instance=department)
         if form.is_valid():
             form.save()
@@ -489,6 +489,6 @@ class DeleteDepartmentViewset(LoginRequiredMixin, PermissionRequiredMixin, View)
     permission_required = 'teacher.delete_department'
 
     def get(self, request, department_id):
-        department = get_object_or_404(Deparment, id=department_id)
+        department = get_object_or_404(GroupSpec, id=department_id)
         department.delete()
         return HttpResponseRedirect(request.META.get("HTTP_REFERER", ""))

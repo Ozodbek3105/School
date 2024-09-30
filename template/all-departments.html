@@ -37,11 +37,6 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Department</th>
-                                        <th>Head Of Dept.</th>
-                                        <th>Mobile</th>
-                                        <th>Email</th>
-                                        <th>Starting Year</th>
-                                        <th>Stu. Capacity</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -50,11 +45,6 @@
                                     <tr>
                                         <td>{{department.id}}</td>
                                         <td>{{department.name}}</td>
-                                        <td>{{department.head_of_department}}</td>
-                                        <td><a href="javascript:void(0);"><strong>{{department.phone}}</strong></a></td>
-                                        <td><a href="javascript:void(0);"><strong>{{department.email}}</strong></a></td>
-                                        <td>{{department.starting_year}}</td>
-                                        <td>{{department.student_capacity}}</td>
                                         <td>
                                             <a href="{% url 'edit_department' department.id %}" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
                                             <a href="{% url 'delete_department' department.id %}" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
