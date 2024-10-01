@@ -64,7 +64,7 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, null=False, blank=False)
     phone = models.CharField(max_length=100, unique=True, null=True)
     address = models.TextField(null=True, blank=True)
-    gender = models.CharField(max_length=100, choices=GENDER_CHOICES, null=True, blank=False, )
+    gender = models.CharField(max_length=100, choices=GENDER_CHOICES, null=True, blank=False)
     department = models.ForeignKey('GroupSpec', on_delete=models.CASCADE, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     education = models.CharField(max_length=300, null=True, blank=False)
@@ -99,6 +99,9 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
     def delete(self, using =None, keep_parents =False):
         if self.profile_photo:
             path = self.profile_photo.path
+            print('delete   -------------------------------------------')
+            print(path)
+            print('delete   -------------------------------------------')
             if path:
                 os.remove(path)
         return super().delete(using, keep_parents)

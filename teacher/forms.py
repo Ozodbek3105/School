@@ -6,7 +6,8 @@ from faker import Faker
 from django.contrib.auth import get_user_model
 from django.forms import modelformset_factory
 from django.db import models
-from teacher.models import   Group, GroupSpec, Lesson, Score_Attendance, Student
+from django.contrib.auth.models import Group as GroupType
+from teacher.models import Group, GroupSpec, Lesson, Score_Attendance, Student
 
 fake = Faker()
 
@@ -30,7 +31,7 @@ class AddProfessorForm(UserCreationForm):
     gender = forms.ChoiceField(
         choices=[('1', 'Male'), ('2', 'Female')],
         widget=forms.Select,
-        required=False, # Make gender optional if needed
+        required=True, # Make gender optional if needed
         label=''
 )
 
@@ -56,6 +57,14 @@ class AddProfessorForm(UserCreationForm):
 
     #     # Update form's initial data
     #     self.initial.update(initial)
+    
+    def save(self, commit = True):
+        user = super().save(commit)
+        group = GroupType.objects.get(name='Teacher')
+        user.groups.add(group)
+        if commit:
+            user.save()
+        return user
 
 
 class EditProfessorForm(forms.ModelForm):

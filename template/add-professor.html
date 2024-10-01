@@ -80,6 +80,9 @@
                       <option value="{{label}}">{{value}}</option>
                       {% endfor %}
                     </select>
+                    <ul class="errorlist text-danger">
+                      {{form.gender.errors}}
+                    </ul>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
@@ -97,6 +100,9 @@
                       <option value="{{skill.id}}">{{skill.name}}</option>
                       {% endfor %}
                     </select>
+                    <ul class="errorlist text-danger">
+                      {{form.department.errors}}
+                    </ul>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
