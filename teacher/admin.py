@@ -38,8 +38,10 @@ class TeacherAdmin(admin.ModelAdmin):
     list_display_links = ("id", "first_name", "last_name")
 
     def save_model(self, request, obj, form, change):
-        # print(obj.groups.all())
-        obj.password = make_password(obj.password)
+        print(obj.groups.all())
+        
+        if obj.password and not obj.password.startswith('pbkdf2_'):
+            obj.password = make_password(obj.password)
         # obj.save()
         # if 'skills' in form.cleaned_data:
         #     obj.skills.set(form.cleaned_data['skills'])
