@@ -2,7 +2,6 @@ from ast import Add
 import datetime
 from shlex import join
 
-from click import group
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import QuerySet
@@ -13,15 +12,11 @@ from django.urls import reverse
 from django.views import View
 from django.contrib.auth.models import Group as GroupType
 
-<<<<<<< HEAD
 from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, AddSkillForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditSkillForm, EditStudentForm, StudentsAttendanceFormSet
 from teacher.models import   Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student
-=======
-import teacher
-from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, \
-    AddStudentForm, EditStudentForm, StudentsAttendanceFormSet
+
+from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditStudentForm, StudentsAttendanceFormSet
 from teacher.models import Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Student, Teacher
->>>>>>> 5b49fdc6de63a0aabb236922acf63d7ce1c70a7b
 
 # Create your views here.
 

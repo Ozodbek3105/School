@@ -6,12 +6,9 @@ from faker import Faker
 from django.contrib.auth import get_user_model
 from django.forms import modelformset_factory
 from django.db import models
-<<<<<<< HEAD
 from teacher.models import   Group, GroupSpec, Lesson, Score_Attendance, Skill, Student
-=======
 from django.contrib.auth.models import Group as GroupType
 from teacher.models import Group, GroupSpec, Lesson, Score_Attendance, Student
->>>>>>> 5b49fdc6de63a0aabb236922acf63d7ce1c70a7b
 
 fake = Faker()
 
