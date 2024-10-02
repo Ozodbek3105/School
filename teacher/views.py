@@ -9,9 +9,8 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views import View
 
-from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, \
-    AddStudentForm, EditStudentForm, StudentsAttendanceFormSet
-from teacher.models import   Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Student
+from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, AddSkillForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditSkillForm, EditStudentForm, StudentsAttendanceFormSet
+from teacher.models import   Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student
 
 # Create your views here.
 
@@ -492,3 +491,73 @@ class DeleteDepartmentViewset(LoginRequiredMixin, PermissionRequiredMixin, View)
         department = get_object_or_404(GroupSpec, id=department_id)
         department.delete()
         return HttpResponseRedirect(request.META.get("HTTP_REFERER", ""))
+
+
+
+class AllSkillsViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
+    permission_required = 'teacher.all_skill'
+
+    def get(self,request):
+        skills = Skill.objects.all()
+        context = {
+            'skills':skills
+        }
+        return TemplateResponse(request, "all-skills.html",context)
+    
+
+class AddSkillViewset(LoginRequiredMixin,View):
+    login_url = 'login'
+    def get( self, request ):
+        form = AddSkillForm()
+        context = {
+            "form": form
+        }
+        return TemplateResponse(request, "add-skill.html",context)
+    def post( self, request ):
+        form = AddSkillForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("all_skills")
+        context = {
+            'form':form 
+        }
+        print("99999999999999999999999999999999999999999999",form.errors)
+        print("00000000000000000000000000000000000000000000",form.data)
+        return TemplateResponse(request,"add-skill.html",context)
+    
+class DeleteSkillViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
+    permission_required = 'teacher.delete_skill'
+    def get(self, request, skill_id):
+        skill = get_object_or_404(Skill, id=skill_id)
+        skill.delete()
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER", ""))
+    
+class EditSkillViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = 'login'
+    permission_required = 'teacher.edit_skill'
+
+    def get(self, request, skill_id):
+        skill = get_object_or_404(Skill, id=skill_id)
+        form =  EditSkillForm(instance=skill)
+        context = {
+            'form': form,
+            'skill': skill
+        }
+        return TemplateResponse(request, 'edit-skill.html', context)
+    
+    def post(self, request, skill_id):
+        skill = get_object_or_404(Skill, id=skill_id)
+        form = EditSkillForm(request.POST, request.FILES, instance=skill)
+        if form.is_valid():
+            form.save()
+            return redirect('all_skills')
+        context = {
+            'form': form,
+            'skill': skill
+        }
+        print(form.errors)
+        print(form.data)
+        return TemplateResponse(request, 'edit-skill.html', context)
+    
