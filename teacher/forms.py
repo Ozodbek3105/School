@@ -6,7 +6,12 @@ from faker import Faker
 from django.contrib.auth import get_user_model
 from django.forms import modelformset_factory
 from django.db import models
+<<<<<<< HEAD
 from teacher.models import   Group, GroupSpec, Lesson, Score_Attendance, Skill, Student
+=======
+from django.contrib.auth.models import Group as GroupType
+from teacher.models import Group, GroupSpec, Lesson, Score_Attendance, Student
+>>>>>>> 5b49fdc6de63a0aabb236922acf63d7ce1c70a7b
 
 fake = Faker()
 
@@ -30,7 +35,7 @@ class AddProfessorForm(UserCreationForm):
     gender = forms.ChoiceField(
         choices=[('1', 'Male'), ('2', 'Female')],
         widget=forms.Select,
-        required=False, # Make gender optional if needed
+        required=True, # Make gender optional if needed
         label=''
 )
 
@@ -56,6 +61,14 @@ class AddProfessorForm(UserCreationForm):
 
     #     # Update form's initial data
     #     self.initial.update(initial)
+    
+    def save(self, commit = True):
+        user = super().save(commit)
+        group = GroupType.objects.get(name='Teacher')
+        user.groups.add(group)
+        if commit:
+            user.save()
+        return user
 
 
 class EditProfessorForm(forms.ModelForm):
@@ -65,13 +78,13 @@ class EditProfessorForm(forms.ModelForm):
                   'department', 'date_of_birth', 'education', 'profile_photo', 'date_joined']
 
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': "New Password"}),
+        widget=forms.PasswordInput(attrs={'placeholder': "New Password", "type": "password"}),
         label="New Passwor",
         required=False,
     )
 
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "Confirm New Password"}),
+        widget=forms.PasswordInput(attrs={"placeholder": "Confirm New Password", 'type': 'password'}),
         label="Confirm New Password",
         required=False
     )
@@ -80,6 +93,7 @@ class EditProfessorForm(forms.ModelForm):
         clean_data = super().clean()
         password1 = clean_data.get("password1", '')
         password2 = clean_data.get("password2", '')
+        print(clean_data)
         if password1 and password2:
             if password1 != password2:
                 raise forms.ValidationError('Password does not match')
@@ -87,9 +101,11 @@ class EditProfessorForm(forms.ModelForm):
         return clean_data
     
     def save(self, commit: bool = True) -> Any:
-        user = super().save(commit)
+        user = super().save(commit=False)
         if self.cleaned_data.get('password1') and self.cleaned_data.get('password2'):
             user.set_password(self.cleaned_data.get('password2'))
+        if commit:
+            user.save()
         return user
 
 

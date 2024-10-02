@@ -1,16 +1,27 @@
 from ast import Add
 import datetime
+from shlex import join
 
+from click import group
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.db.models import QuerySet
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views import View
+from django.contrib.auth.models import Group as GroupType
 
+<<<<<<< HEAD
 from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, AddSkillForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditSkillForm, EditStudentForm, StudentsAttendanceFormSet
 from teacher.models import   Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student
+=======
+import teacher
+from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, \
+    AddStudentForm, EditStudentForm, StudentsAttendanceFormSet
+from teacher.models import Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Student, Teacher
+>>>>>>> 5b49fdc6de63a0aabb236922acf63d7ce1c70a7b
 
 # Create your views here.
 
@@ -22,7 +33,7 @@ class AllProfessorsViewset(LoginRequiredMixin, View):
     login_url = "login"
 
     def get(self, request):
-        teachers = User.objects.all()
+        teachers = User.objects.filter(groups=GroupType.objects.get(name='Teacher'))
         context = {"teachers": teachers}
         return TemplateResponse(request, 'all-professors.html', context)
 
@@ -55,12 +66,12 @@ class EditProfessorViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
     def get(self, request, professor_id):
         teacher = get_object_or_404(User, id=professor_id)
-        form = AddProfessorForm(instance=teacher)
+        form = EditProfessorForm(instance=teacher)
         context = {
             'form': form,
             "teacher": teacher,
         }
-        print(form.as_p())
+        # print(form.as_p())
         print('caafaw ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd  ')
         return TemplateResponse(request, 'edit-professor.html', context)
     
@@ -104,7 +115,14 @@ class DeleteProfessorViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
 class AllStudentsViewset(LoginRequiredMixin, View):
     login_url = 'login'
     def get(self, request):
-        students = Student.objects.all()
+        # print(type(GroupType(request.user.groups.all())), GroupType(request.user.groups.all()), ''.join([group.name for group in request.user.groups.all()]) == GroupType.objects.get(name="Teacher"), GroupType.objects.get(name="Teacher"), type(GroupType.objects.get(name="Teacher")), 'User groups ===============================')
+        # print([group.name for group in request.user.groups.all()])
+        if 'Teacher' in [group.name for group in request.user.groups.all()]:
+            students = Student.objects.filter(group__teacher__first_name=request.user.first_name)
+        else:
+            print("Manger ================================")
+            students = Student.objects.all()
+
         context = {
             "students": students,
         }
@@ -178,7 +196,11 @@ class StudentProfileViewset(LoginRequiredMixin, View):
 class AllCoursesViewset(LoginRequiredMixin, View):
     login_url = 'login'
     def get(self, request):
-        courses = Group.objects.all()
+        print([group.name for group in request.user.groups.all()])
+        if 'Teacher' in [group.name for group in request.user.groups.all()]:
+            courses = Group.objects.filter(teacher__first_name=request.user.first_name)
+        else:
+            courses = Group.objects.all()
         context = {
             "courses": courses
             }
@@ -249,9 +271,12 @@ class DeleteCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 class AllLessonsViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = 'login'
-    permission_required = ''
+    permission_required = 'teacher.view_lesson'
     def get(self, request):
-        lessons = Lesson.objects.all()
+        if 'Teacher' in [group.name for group in request.user.groups.all()]:
+            lessons = Lesson.objects.filter(group__teacher__first_name=request.user.first_name)
+        else:
+            lessons = Lesson.objects.all()
         context = {
             'lessons': lessons
         }
@@ -434,7 +459,8 @@ class AllDepartmentViewset(View):
         return TemplateResponse(request, 'all-departments.html', context)
 
 
-class AddDepartmentViewset(LoginRequiredMixin,View):
+class AddDepartmentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = ["teacher.add_department"]
     login_url = 'login'
     def get( self, request ):
         form = AddDepartmentForm()
