@@ -6,6 +6,7 @@ from faker import Faker
 from django.contrib.auth import get_user_model
 from django.forms import modelformset_factory
 from django.db import models
+from teacher.models import   Group, GroupSpec, Lesson, Score_Attendance, Skill, Student
 from django.contrib.auth.models import Group as GroupType
 from teacher.models import Group, GroupSpec, Lesson, Score_Attendance, Student
 
@@ -157,3 +158,13 @@ class AddDepartmentForm(forms.ModelForm):
     class Meta:
         model = GroupSpec
         fields = ['name','description']
+
+class AddSkillForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        fields = "__all__"
+
+class EditSkillForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        fields = "__all__"
