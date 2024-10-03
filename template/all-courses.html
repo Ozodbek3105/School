@@ -44,7 +44,29 @@
                             </div>
                             <a href='{% url "about_course" course.id %}' class="btn btn-outline-primary p-1 mx-2 mb-2">Read More</a>
                             <a href='{% url "edit_course" course.id %}' class="btn btn-outline-warning p-1 mx-2 mb-2">Edit course</a>
-                            <a href='{% url "delete_course" course.id %}' class="btn btn-outline-danger p-1 mx-2 mb-2">Delete course</a>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-outline-danger p-1 mx-2 mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{course.id}}">
+                            Delete Course
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop{{course.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{course.id}}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel{{course.id}}">Delete</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete the course: {{course.name}}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a href='{% url "delete_course" course.id %}' class="btn btn-outline-danger mx-2 mb-2">Delete course</a>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                             <a href='{% url "view_course" course.id %}' class="btn btn-outline-success p-1 mx-2 mb-2">View</a>
 						</div>
 					</div>

@@ -50,12 +50,14 @@
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label class="form-label">Group</label>
-                                    <select name="group" class="form-control">
-                                    <option value="Department">Choose...</option>
+                                    <select name="group" class="form-control" multiple>
                                     {% for group in form.group.field.queryset %}
                                     <option value="{{group.id}}">{{group.name}} {{group.course_code}}</option>
                                     {% endfor %}
                                     </select>
+                                    <ul class="text-danger">
+                                        {{form.group.errors}}
+                                    </ul>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12">

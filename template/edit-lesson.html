@@ -48,10 +48,9 @@
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label class="form-label">Group</label>
-                                        <select name="group" class="form-control">
-                                            <option value="Department">{{ form.get_group_display }}</option>
+                                        <select name="group" class="form-control" multiple>
                                             {% for group in form.group.field.queryset %}
-                                                <option value="{{ group.id }}" {% if group.id == form.group.value %}selected{% endif %}>
+                                                <option value="{{ group.id }}" {% if group.id == form.group.value %} selected {% endif %}>
                                                     {{ group.name }} {{ group.course_code }}
                                                 </option>
                                             {% endfor %}

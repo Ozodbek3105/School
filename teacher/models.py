@@ -2,7 +2,7 @@ import django.db.models.deletion
 import os
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
-from django.contrib.auth.models import Group, PermissionsMixin
+from django.contrib.auth.models import PermissionsMixin
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -185,18 +185,21 @@ class Student(models.Model):
 
 
 def lesson_file_upload_path(instance, file_name):
-    if instance.lesson.group.name.name:
-        return f"lessons/{instance.lesson.group.name.name}/{file_name}"
-    else:
-        group_name = 'Unknown'
-        return f"lessons/{group_name}/{file_name}"
-    
+    counter = 0
+    groups = [group.name for group in instance.lesson.group.all()]
+    # if instance.lesson.group.name.name:
+    counter += 1
+    return f"lessons/{groups[counter]}/{file_name}"
+    # else:
+    #     group_name = 'Unknown'
+    #     return f"lessons/{group_name}/{file_name}"
+
 
 class Lesson(models.Model):
     theme = models.CharField(max_length=255)
     date = models.DateField()
     description = models.CharField(max_length=255)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ManyToManyField(Group)
 
     def __str__(self):
         return f"{self.theme}"

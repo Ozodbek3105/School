@@ -35,8 +35,7 @@
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
                                             <label class="form-label">Name</label>
-                                            <select class="form-control" name="name">
-                                                <option value="Department">Choose...</option>
+                                            <select class="form-control" name="name" multiple>
                                                 {% for name in form.name.field.queryset %}
                                                 {% if name.id == form.initial.name %}
                                                 <option value="{{name.id}}" selected>{{name.name}}</option>

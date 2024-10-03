@@ -1,7 +1,9 @@
 from ast import Add
 import datetime
+from os import name
 from shlex import join
 
+from click import group
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import QuerySet
@@ -13,7 +15,7 @@ from django.views import View
 from django.contrib.auth.models import Group as GroupType
 
 from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, AddSkillForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditSkillForm, EditStudentForm, StudentsAttendanceFormSet
-from teacher.models import   Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student
+from teacher.models import Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student
 
 from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditStudentForm, StudentsAttendanceFormSet
 from teacher.models import Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Student, Teacher
@@ -207,7 +209,9 @@ class AddCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'teacher.add_course'
 
     def get(self, request):
+        # manager_group = GroupType.objects.get(name='Manager')
         form = AddCourseForm()
+        form.fields["teacher"].queryset = form.fields['teacher'].queryset.filter(groups__name='Teacher')
         context = {
             "form": form
             }
@@ -233,6 +237,8 @@ class EditCoursesViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request, course_id):
         course = get_object_or_404(Group, id=course_id)
         form = AddCourseForm(instance=course)
+        # manager_group = GroupType.objects.get(name='Manager')
+        form.fields["teacher"].queryset = form.fields['teacher'].queryset.filter(groups__name='Teacher')
         context = {
             'form': form,
             'course': course
@@ -284,6 +290,11 @@ class AddLessonViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 
     def get(self, request):
         form = AddLessonForm()
+        # if 'Teacher' in [group.name for group in request.user.groups.all()] and 'Manager' in [group.name for group in request.user.groups.all()]:
+
+        if 'Teacher' in [group.name for group in request.user.groups.all()]:
+            form.fields['group'].queryset = form.files['group'].queryset.filter(group__teacher__id=request.user.id)
+        
         context = {
             'form': form
         }
@@ -295,12 +306,14 @@ class AddLessonViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
             lesson = form.save()
             files = request.FILES.getlist("files", None)
             if files:
-                for file in files:
-                    LessonFiles.objects.create(
-                        file=file,
-                        lesson=lesson
-                    )
+                for _ in lesson.group.all():
+                    for file in files:
+                        LessonFiles.objects.create(
+                            file=file,
+                            lesson=lesson,
+                        )
             return redirect('all_lessons')
+        
 
         context = {
             "form": form
