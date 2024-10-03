@@ -27,5 +27,9 @@ urlpatterns = [
     path('all_department/', AllDepartmentViewset.as_view(),name='department'),
     path('add_department/',AddDepartmentViewset.as_view(),name="add_department"),
     path('edit_department/<int:department_id>/',EditDepartmentViewset.as_view(),name="edit_department"),
-    path('delete_department/<int:department_id>/',DeleteDepartmentViewset.as_view(),name="delete_department")
+    path('delete_department/<int:department_id>/',DeleteDepartmentViewset.as_view(),name="delete_department"),
+    path('all_skills/', AllSkillsViewset.as_view(),name='all_skills'),
+    path('add_skill/',AddSkillViewset.as_view(),name="add_skill"),
+    path('edit_skill/<int:skill_id>/',EditSkillViewset.as_view(),name="edit_skill"),
+    path('delete_skill/<int:skill_id>/',DeleteSkillViewset.as_view(),name="delete_skill"),
 ]
