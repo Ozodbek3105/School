@@ -402,7 +402,7 @@ class Attendance(LoginRequiredMixin, View):
         #     created_at__exact=datetime.date.today())
         # )
         # for att in Score_Attendance.objects.filter(lesson)
-        formset = StudentsAttendanceFormSet(queryset=lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
+        formset = StudentsAttendanceFormSet(queryset=Score_Attendance.objects.filter(lesson=lesson, student__in=students))
         print(lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
         context = {
             'formset': formset,
@@ -413,14 +413,14 @@ class Attendance(LoginRequiredMixin, View):
 
     def post(self, request, lesson_id):
         lesson = Lesson.objects.get(id=lesson_id)
-        queryset = Score_Attendance.objects.filter(created_at__exact=datetime.date.today())
-        formset = StudentsAttendanceFormSet(request.POST, queryset=queryset)
         group = lesson.group
         students = group.student_set.all()
+        queryset = Score_Attendance.objects.filter(lesson=lesson, student__in=students)
+        formset = StudentsAttendanceFormSet(request.POST, queryset=queryset)
         if formset.is_valid():
-            print("//////////////////////////////////////////////")
-            print(formset)
-            print("//////////////////////////////////////////////")
+            # print("//////////////////////////////////////////////")
+            # print(formset)
+            # print("//////////////////////////////////////////////")
             instances = formset.save(commit=False)
 
             for form, student in zip(instances, students):
