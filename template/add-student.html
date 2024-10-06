@@ -57,6 +57,7 @@
                                                 <select
                                                 name="group"
                                                 class="form-control"
+                                                multiple
                                                 >
                                                 <option value="Department">choice</option>
                                                 {% for group in form.group.field.queryset %}
@@ -103,7 +104,7 @@
 										</div>
 										<div class="col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-group">
-											{{form.profile_photo|as_crispy_field}}
+											{{form.profile_photo}}
                                             </div>
 										</div>
 										<div class="col-lg-12 col-md-12 col-sm-12">
