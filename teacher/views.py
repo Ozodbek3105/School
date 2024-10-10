@@ -1,6 +1,4 @@
-from ast import Add
-import datetime
-from shlex import join
+import os
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -11,9 +9,6 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth.models import Group as GroupType
-
-from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, AddSkillForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditSkillForm, EditStudentForm, StudentsAttendanceFormSet
-from teacher.models import   Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student
 
 from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditStudentForm, StudentsAttendanceFormSet
 from teacher.models import Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Student, Teacher
@@ -316,9 +311,7 @@ class EditLessonViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
         lesson = Lesson.objects.get(id=lesson_id)
         files = LessonFiles.objects.filter(lesson=lesson)
         form = EditLessonForm(instance=lesson)
-        print('--------------------------------------------')
-        print(files)
-        print('--------------------------------------------')
+        # print(files)
         context = {
             'form': form,
             'files': files,
@@ -329,6 +322,10 @@ class EditLessonViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
     def post(self, request, lesson_id):
         lesson = Lesson.objects.get(id=lesson_id)
         form = EditLessonForm(request.POST, instance=lesson)
+        print('--------------------------------------------')
+        print(form)
+        print('--------------------------------------------')
+
         if form.is_valid():
             lesson = form.save()
             # old_files = LessonFiles.objects.filter(lesson=lesson)
@@ -354,6 +351,8 @@ def delete_lesson_file(request, lesson_file_id):
     print("+++++++++++++++++++++++++++++++++++++++++++")
     lesson_file = get_object_or_404(LessonFiles, id=lesson_file_id)
     lesson_id = lesson_file.lesson.id
+    lesson_file.file.delete()
+    # os.pa
     lesson_file.delete()
     return redirect("edit_lesson", lesson_id=lesson_id)
 

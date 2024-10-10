@@ -97,7 +97,7 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
         return f'{self.first_name} {self.last_name}'
 
     def delete(self, using =None, keep_parents =False):
-        if self.profile_photo:
+        if self.profile_photo.delete():
             path = self.profile_photo.path
             print('delete   -------------------------------------------')
             print(path)

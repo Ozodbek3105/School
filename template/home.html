@@ -317,7 +317,11 @@
                                                     <a href="javascript:void(0);">
                                                         <div class="media d-flex align-items-center">
                                                             <div class="avatar avatar-xl mr-2">
-                                                                <img class="rounded-circle img-fluid" src='{% static "images/avatar/5.png" %}' width="30" alt="">
+                												{% if student.profile_photo %}
+                                                                <img class="rounded-circle img-fluid" src="{{student.profile_photo.url}}" width="30" alt="">
+												                {% else %}
+                                                                <img class="rounded-circle img-fluid" src="{% static 'images/defoult.png' %}" width="30" alt="">
+												                {% endif %}
                                                             </div>
                                                             <div class="media-body">
                                                                 <h5 class="mb-0 fs--1">{{student.first_name}} {{student.last_name}}</h5>
