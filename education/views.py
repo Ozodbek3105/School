@@ -11,6 +11,8 @@ from teacher.models import Group, GroupSpec, Student
 
 @login_required(login_url='login')
 def home(request):
+    print("ppppppppppppppp")
+    print(request.GET.getlist)
     query_set = Student.objects.all()
     new_students = query_set.order_by('-created_at')[:7]
     total_students = query_set.count()

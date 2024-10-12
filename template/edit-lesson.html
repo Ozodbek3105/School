@@ -5,7 +5,8 @@
 {% block content %}
 <style>
     .ac {
-        max-width: 1px;
+        min-width: 1px;
+        max-width: 40px;
     }
     td, th {
         border: 1px solid #dddddd;
@@ -116,7 +117,7 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <button type="submit" class="btn btn-primary">Submit</button>
-                                    <button type="reset" class="btn btn-light">Cancel</button>
+                                    <a class="btn btn-light" href="{% url 'all_lessons' %}">Cancel</a>
                                 </div>
                             </div>
                         </form>

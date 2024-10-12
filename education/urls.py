@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 
 from .views import LogOut, Login
 from .views import AddManagerViewset
+from rest_framework.authtoken.views import obtain_auth_token
 
 from .views import home
 
@@ -32,4 +33,6 @@ urlpatterns = [
     path('education/', include('teacher.urls')),
     path("login/", Login.as_view(), name="login"),
     path('logout/', LogOut.as_view(), name="logout"),
+    path('api/v1/', include('teacher.router')),
+    path('auth/', obtain_auth_token, name="get_token"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

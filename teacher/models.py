@@ -1,4 +1,3 @@
-import django.db.models.deletion
 import os
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
@@ -177,7 +176,7 @@ class Student(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-    def delete(self, using=None, keep_parents=True):
+    def delete(self, using=None, keep_parents=False):
         if self.profile_photo:
             path = self.profile_photo.path
             os.remove(path)
