@@ -171,7 +171,7 @@ class DeleteStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = 'login'
     permission_required = 'teacher.delete_student'
 
-    def post(self, request, student_id):
+    def get(self, request, student_id):
         student = Student.objects.get(id=student_id)
         student.delete()
         return redirect("all_students")
