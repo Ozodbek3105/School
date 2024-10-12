@@ -97,7 +97,7 @@ class DeleteProfessorViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
         if professor_id:
             teacher = get_object_or_404(User, id=professor_id)
             teacher.delete()
-            professor_id += 1
+            # professor_id += 1
             return HttpResponseRedirect(request.META.get("HTTP_REFERER", ""))
             # return HttpResponseRedirect(request.path_info) # Does not work properly
 
@@ -153,12 +153,14 @@ class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
         }
         return TemplateResponse(request, 'edit-student.html',context)
 
-    def post(self,request,student_id):
+    def post(self, request, student_id):
         student = get_object_or_404(Student, id=student_id)
         form = EditStudentForm(request.POST,request.FILES,instance=student)
         if form.is_valid():
             form.save()
             return redirect('all_students')
+        form.group = student.group
+        print(form.errors)
         context = {
             "form": form,
             "student":student,
@@ -167,12 +169,12 @@ class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
         return TemplateResponse(request, 'edit-student.html',context)
     
 
-class DeleteStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+class DeleteStudentViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
     login_url = 'login'
-    permission_required = 'teacher.delete_student'
+    permission_required = ['teacher.delete_student']
 
-    def post(self, request, student_id):
-        student = Student.objects.get(id=student_id)
+    def get(self, request, student_id):
+        student = get_object_or_404(Student, id=student_id)
         student.delete()
         return redirect("all_students")
 

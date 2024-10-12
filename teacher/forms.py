@@ -1,10 +1,11 @@
 from dataclasses import fields
+import re
 from typing import Any
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from faker import Faker
 from django.contrib.auth import get_user_model
-from django.forms import modelformset_factory
+from django.forms import ValidationError, modelformset_factory
 from django.db import models
 from teacher.models import   Group, GroupSpec, Lesson, Score_Attendance, Skill, Student
 from django.contrib.auth.models import Group as GroupType
@@ -66,6 +67,14 @@ class AddProfessorForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
+    def clean_phone(self):
+        phone = self.cleaned_data.get("phone", '')
+        phone_regex = r"^(\+998\s?)?[0-9]{2}\s?[0-9]{3}[\s?-]?[0-9]{2}[\s?-]?[0-9]{2}$"
+        phone_check = re.compile(phone_regex)
+        if not phone_check.fullmatch(phone):
+            raise ValidationError('Invalid phone number')
+        return phone
 
 
 class EditProfessorForm(forms.ModelForm):
@@ -86,6 +95,14 @@ class EditProfessorForm(forms.ModelForm):
         required=False
     )
 
+    def clean_phone(self):
+        phone = self.cleaned_data.get("phone", '')
+        phone_regex = r"^(\+998\s?)?[0-9]{2}\s?[0-9]{3}[\s?-]?[0-9]{2}[\s?-]?[0-9]{2}$"
+        phone_check = re.compile(phone_regex)
+        if not phone_check.fullmatch(phone):
+            raise ValidationError('Invalid phone number')
+        return phone
+
     def clean(self) -> dict[str, Any]:
         clean_data = super().clean()
         password1 = clean_data.get("password1", '')
@@ -105,6 +122,13 @@ class EditProfessorForm(forms.ModelForm):
             user.save()
         return user
 
+    gender = forms.ChoiceField(
+        choices=[('1', 'Male'), ('2', 'Female')],
+        widget=forms.Select,
+        required=False, # Make gender optional if needed
+        label=''
+        )
+
 
 class AddCourseForm(forms.ModelForm):
     class Meta:
@@ -123,15 +147,38 @@ class AddStudentForm(forms.ModelForm):
     gender = forms.ChoiceField(
         choices=[('1', 'Male'), ('2', 'Female')],
         widget=forms.Select,
-        required=False, # Make gender optional if needed
+        required=True, # Make gender optional if needed
         label=''
         )
+    
+    def clean_phone(self):
+        phone = self.cleaned_data.get("phone", '')
+        phone_regex = r"^(\+998\s?)?[0-9]{2}\s?[0-9]{3}[\s?-]?[0-9]{2}[\s?-]?[0-9]{2}$"
+        phone_check = re.compile(phone_regex)
+        if not phone_check.fullmatch(phone):
+            raise ValidationError('Invalid phone number')
+        return phone
     
 
 class EditStudentForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ("first_name", "last_name", "email", "phone", "address", "group", "profile_photo", "gender")
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get("phone", '')
+        phone_regex = r"^(\+998\s?)?[0-9]{2}\s?[0-9]{3}[\s?-]?[0-9]{2}[\s?-]?[0-9]{2}$"
+        phone_check = re.compile(phone_regex)
+        if not phone_check.fullmatch(phone):
+            raise ValidationError('Invalid phone number')
+        return phone
+    
+    gender = forms.ChoiceField(
+        choices=[('1', 'Male'), ('2', 'Female')],
+        widget=forms.Select,
+        required=False, # Make gender optional if needed
+        label=''
+        )
 
 
 class AddLessonForm(forms.ModelForm):
@@ -159,10 +206,12 @@ class AddDepartmentForm(forms.ModelForm):
         model = GroupSpec
         fields = ['name','description']
 
+
 class AddSkillForm(forms.ModelForm):
     class Meta:
         model = Skill
         fields = "__all__"
+
 
 class EditSkillForm(forms.ModelForm):
     class Meta:
