@@ -185,7 +185,11 @@ class DeleteStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
 class StudentProfileViewset(LoginRequiredMixin, View):
     login_url = 'login'
     def get(self, request, student_id):
-        return TemplateResponse(request, 'about-student.html')
+        student = Student.objects.get(id=student_id)
+        context = {
+            "student":student,
+        }
+        return TemplateResponse(request, 'about-student.html',context)
 
 
 class AllCoursesViewset(LoginRequiredMixin, View):

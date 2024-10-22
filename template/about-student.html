@@ -28,7 +28,11 @@
 								<div class="card">
 									<div class="text-center p-3 overlay-box" style="background-image: url({% static 'images/big/img1.jpg' %});">
 										<div class="profile-photo">
+                                            {% if student.profile_photo %}
 											<img src="{{student.profile_photo.url}}" width="100" class="img-fluid rounded-circle" alt="">
+                                            {% else %}
+                                            <img src="{% static 'images/defoult.png' %}" width="100" class="img-fluid rounded-circle" alt="">
+                                            {% endif %}
 										</div>
 										<h3 class="mt-3 mb-1 text-white">{{student.first_name}} {{student.last_name }}</h3>
 									</div>
