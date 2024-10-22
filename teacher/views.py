@@ -1,6 +1,4 @@
-from ast import Add
-import datetime
-from shlex import join
+import os
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -11,9 +9,6 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth.models import Group as GroupType
-
-from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, AddSkillForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditSkillForm, EditStudentForm, StudentsAttendanceFormSet
-from teacher.models import   Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student
 
 from teacher.forms import AddCourseForm, AddDepartmentForm, AddLessonForm, AddProfessorForm, EditLessonForm, EditProfessorForm, AddStudentForm, EditStudentForm, StudentsAttendanceFormSet
 from teacher.models import Group, GroupSpec, Lesson, LessonFiles, Score_Attendance, Student, Teacher
@@ -102,7 +97,7 @@ class DeleteProfessorViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
         if professor_id:
             teacher = get_object_or_404(User, id=professor_id)
             teacher.delete()
-            professor_id += 1
+            # professor_id += 1
             return HttpResponseRedirect(request.META.get("HTTP_REFERER", ""))
             # return HttpResponseRedirect(request.path_info) # Does not work properly
 
@@ -158,12 +153,14 @@ class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
         }
         return TemplateResponse(request, 'edit-student.html',context)
 
-    def post(self,request,student_id):
+    def post(self, request, student_id):
         student = get_object_or_404(Student, id=student_id)
         form = EditStudentForm(request.POST,request.FILES,instance=student)
         if form.is_valid():
             form.save()
             return redirect('all_students')
+        form.group = student.group
+        print(form.errors)
         context = {
             "form": form,
             "student":student,
@@ -172,12 +169,12 @@ class EditStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
         return TemplateResponse(request, 'edit-student.html',context)
     
 
-class DeleteStudentViewset(LoginRequiredMixin, PermissionRequiredMixin, View):
+class DeleteStudentViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
     login_url = 'login'
-    permission_required = 'teacher.delete_student'
+    permission_required = ['teacher.delete_student']
 
-    def post(self, request, student_id):
-        student = Student.objects.get(id=student_id)
+    def get(self, request, student_id):
+        student = get_object_or_404(Student, id=student_id)
         student.delete()
         return redirect("all_students")
 
@@ -320,9 +317,7 @@ class EditLessonViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
         lesson = Lesson.objects.get(id=lesson_id)
         files = LessonFiles.objects.filter(lesson=lesson)
         form = EditLessonForm(instance=lesson)
-        print('--------------------------------------------')
-        print(files)
-        print('--------------------------------------------')
+        # print(files)
         context = {
             'form': form,
             'files': files,
@@ -333,6 +328,10 @@ class EditLessonViewset(PermissionRequiredMixin, LoginRequiredMixin, View):
     def post(self, request, lesson_id):
         lesson = Lesson.objects.get(id=lesson_id)
         form = EditLessonForm(request.POST, instance=lesson)
+        print('--------------------------------------------')
+        print(form)
+        print('--------------------------------------------')
+
         if form.is_valid():
             lesson = form.save()
             # old_files = LessonFiles.objects.filter(lesson=lesson)
@@ -358,6 +357,8 @@ def delete_lesson_file(request, lesson_file_id):
     print("+++++++++++++++++++++++++++++++++++++++++++")
     lesson_file = get_object_or_404(LessonFiles, id=lesson_file_id)
     lesson_id = lesson_file.lesson.id
+    lesson_file.file.delete()
+    # os.pa
     lesson_file.delete()
     return redirect("edit_lesson", lesson_id=lesson_id)
 
@@ -406,7 +407,7 @@ class Attendance(LoginRequiredMixin, View):
         #     created_at__exact=datetime.date.today())
         # )
         # for att in Score_Attendance.objects.filter(lesson)
-        formset = StudentsAttendanceFormSet(queryset=lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
+        formset = StudentsAttendanceFormSet(queryset=Score_Attendance.objects.filter(lesson=lesson, student__in=students))
         print(lesson.score_attendance_set.filter(lesson=lesson, student__in=students))
         context = {
             'formset': formset,
@@ -417,14 +418,14 @@ class Attendance(LoginRequiredMixin, View):
 
     def post(self, request, lesson_id):
         lesson = Lesson.objects.get(id=lesson_id)
-        queryset = Score_Attendance.objects.filter(created_at__exact=datetime.date.today())
-        formset = StudentsAttendanceFormSet(request.POST, queryset=queryset)
         group = lesson.group
         students = group.student_set.all()
+        queryset = Score_Attendance.objects.filter(lesson=lesson, student__in=students)
+        formset = StudentsAttendanceFormSet(request.POST, queryset=queryset)
         if formset.is_valid():
-            print("//////////////////////////////////////////////")
-            print(formset)
-            print("//////////////////////////////////////////////")
+            # print("//////////////////////////////////////////////")
+            # print(formset)
+            # print("//////////////////////////////////////////////")
             instances = formset.save(commit=False)
 
             for form, student in zip(instances, students):

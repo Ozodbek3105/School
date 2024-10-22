@@ -49,22 +49,27 @@
 										</div>
 										
                                         <div class="col-lg-6 col-md-6 col-sm-12">
-                                            <div class="form-group">
-                                            <label class="form-label">Group</label>
-                                            <select
-                                                name="group"
-                                                class="form-control"
-                                                multiple>
-                                                {% for group in form.group.field.queryset %}
-                                                    <option value="{{ group.id }}" 
-                                                        {% if group.id in form.group.value %} selected {% endif %}
-                                                    >
-                                                        {{ group.name }}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
+                                            <div class="form-group div_id_group">
+                                                <label class="form-label requiredField">Group</label>
+                                                <select
+                                                    name="group"
+                                                    class="selectmultiple form-control"
+                                                    id="id_group"
+                                                    multiple>
+                                                    {% for group in form.group.field.queryset %}
+                                                        <option value="{{ group.id }}" 
+                                                            {% if group.id in form.group.value %} selected {% endif %}
+                                                        >
+                                                            {{ group.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                                <ul class="text-danger">
+                                                    {{form.group.errors}}
+                                                </ul>
                                             </div>
                                         </div>
+
 										<div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label">Gender</label>
@@ -72,7 +77,6 @@
                                                 name="gender"
                                                 class="form-control"
                                                 >
-                                                <option value="">Choose...</option>
                                                 {% for label, value in form.gender.field.choices %}
                                                 {% if label == form.initial.gender %}<option value="{{label}}"selected>{{value}}</option>
                                                 {% else %}
@@ -95,7 +99,7 @@
 										</div>
 										<div class="col-lg-12 col-md-12 col-sm-12">
 											<button type="submit" class="btn btn-primary">Submit</button>
-											<button type="submit" class="btn btn-light">Cencel</button>
+											<a href="{% url 'all_students' %}" class="btn btn-light">Cencel</a>
 										</div>
 									</div>
 								</form>

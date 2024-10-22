@@ -67,7 +67,29 @@
 												<td>{{teacher.date_joined}}</td>
 												<td>
 													<a href="{% url 'edit_professor' teacher.id %}" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-													<a href="{% url 'delete_professor' teacher.id %}" id="{{teacher.id}}" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
+													<!-- Button trigger modal -->
+<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{teacher.id}}">
+  <i class="la la-trash-o"></i>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop{{teacher.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete Teacher: <strong>{{teacher.first_name}} {{teacher.last_name}}</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="{% url 'delete_professor' teacher.id %}" class="btn btn-danger">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
 												</td>												
 											</tr>
 											{% endfor %}
@@ -90,7 +112,7 @@
 											<div class="dropdown-menu dropdown-menu-right border py-0">
 												<div class="py-2">
 													<a class="dropdown-item" href="{% url 'edit_professor' teacher.id %}">Edit</a>
-													<a class="dropdown-item text-danger" href="{% url 'delete_professor' teacher.id %}">Delete</a>
+													<a href="{% url 'delete_professor' teacher.id %}" class="btn btn-danger dropdown-item">Delete</a>
 												</div>
 											</div>
 										</div>

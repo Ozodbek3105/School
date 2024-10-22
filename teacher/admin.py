@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.hashers import make_password
 
-from teacher.models import   Group, GroupLikes, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student, Teacher, TeacherManager
+from teacher.models import   Group, GroupLikes, GroupSpec, Lesson, LessonFiles, Score_Attendance, Skill, Student, Teacher
 
 class StudentForm(forms.ModelForm):
     class Meta:
